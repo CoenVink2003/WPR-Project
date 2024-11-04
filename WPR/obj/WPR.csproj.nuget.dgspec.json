@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Coen\\Desktop\\WPR-Project\\WPR-Project\\WPR\\WPR.csproj": {}
+    "/Users/timobrouwer/Documents/HHS/Jaar 2/Semester 3/Project/WPR/WPR.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Coen\\Desktop\\WPR-Project\\WPR-Project\\WPR\\WPR.csproj": {
+    "/Users/timobrouwer/Documents/HHS/Jaar 2/Semester 3/Project/WPR/WPR.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Coen\\Desktop\\WPR-Project\\WPR-Project\\WPR\\WPR.csproj",
+        "projectUniqueName": "/Users/timobrouwer/Documents/HHS/Jaar 2/Semester 3/Project/WPR/WPR.csproj",
         "projectName": "WPR",
-        "projectPath": "C:\\Users\\Coen\\Desktop\\WPR-Project\\WPR-Project\\WPR\\WPR.csproj",
-        "packagesPath": "C:\\Users\\Coen\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Coen\\Desktop\\WPR-Project\\WPR-Project\\WPR\\obj\\",
+        "projectPath": "/Users/timobrouwer/Documents/HHS/Jaar 2/Semester 3/Project/WPR/WPR.csproj",
+        "packagesPath": "/Users/timobrouwer/.nuget/packages/",
+        "outputPath": "/Users/timobrouwer/Documents/HHS/Jaar 2/Semester 3/Project/WPR/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Coen\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/Users/timobrouwer/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -123,7 +123,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.401/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.401/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
