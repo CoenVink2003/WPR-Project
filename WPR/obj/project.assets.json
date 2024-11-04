@@ -8966,7 +8966,8 @@
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 8.0.6",
       "SQLite >= 3.13.0",
       "Swashbuckle.AspNetCore >= 6.9.0",
-      "Swashbuckle.AspNetCore.Swagger >= 6.9.0"
+      "Swashbuckle.AspNetCore.Swagger >= 6.9.0",
+      "Swashbuckle.AspNetCore.SwaggerUI >= 6.9.0"
     ]
   },
   "packageFolders": {
@@ -9064,6 +9065,10 @@
             "version": "[6.9.0, )"
           },
           "Swashbuckle.AspNetCore.Swagger": {
+            "target": "Package",
+            "version": "[6.9.0, )"
+          },
+          "Swashbuckle.AspNetCore.SwaggerUI": {
             "target": "Package",
             "version": "[6.9.0, )"
           }
