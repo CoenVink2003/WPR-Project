@@ -35,19 +35,19 @@ public class CompanyController : ControllerBase
         _context.Companies.Add(company);
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction("GetCompany", new { id = employee.Id }, employee);
+        return CreatedAtAction("GetCompany", new { id = company.Id }, company);
     }
         
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutEmployee(int id, Employee employee)
+    public async Task<IActionResult> PutCompany(int id, Company company)
     {
         
-        if (id != employee.Id)
+        if (id != company.Id)
         {
-            return BadRequest("ID in URL komt niet overeen met ID in het Employee-object.");
+            return BadRequest("ID in URL komt niet overeen met ID in het Company-object.");
         }
         
-        _context.Entry(employee).State = EntityState.Modified;
+        _context.Entry(company).State = EntityState.Modified;
 
         try
         {
@@ -56,9 +56,9 @@ public class CompanyController : ControllerBase
         catch (DbUpdateConcurrencyException)
         {
 
-            if (!_context.Employees.Any(e => e.Id == id))
+            if (!_context.Companies.Any(e => e.Id == id))
             {
-                return NotFound("Employee niet gevonden.");
+                return NotFound("Company niet gevonden.");
             }
             else
             {
@@ -71,15 +71,15 @@ public class CompanyController : ControllerBase
 
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteEmployee(int id)
+    public async Task<IActionResult> DeleteCompnay(int id)
     {
-        var employee = await _context.Employees.FindAsync(id);
-        if (employee == null)
+        var company = await _context.Companies.FindAsync(id);
+        if (company == null)
         {
             return NotFound();
         }
         
-        _context.Remove(employee);
+        _context.Remove(company);
         await _context.SaveChangesAsync();
         
         return NoContent();
