@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SQLitePCL;
 using Microsoft.EntityFrameworkCore;
 using WPR;
 
@@ -8,14 +7,20 @@ using WPR;
 [ApiController]
 public class EmployeeController : ControllerBase
 {
-    private DatabaseContext _context = new DatabaseContext();
-    
+    private readonly DatabaseContext _context;
+
+    // Constructor voor Dependency Injection van de DatabaseContext
+    public EmployeeController(DatabaseContext context)
+    {
+        _context = context ?? throw new ArgumentNullException(nameof(context)); // Gooi een fout als _context null is
+    }
+
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
     {
         return await _context.Employees.ToListAsync();
     }
-    
+
     [HttpGet("{id}")]
     public async Task<ActionResult<Employee>> GetEmployee(int id)
     {
@@ -30,23 +35,32 @@ public class EmployeeController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
+    public async Task<ActionResult<Employee>> PostEmployee([FromBody] Employee employee)
     {
+        if (employee == null)
+        {
+            return BadRequest("Employee object is null.");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
         _context.Employees.Add(employee);
         await _context.SaveChangesAsync();
 
         return CreatedAtAction("GetEmployee", new { id = employee.Id }, employee);
     }
-        
+
     [HttpPut("{id}")]
     public async Task<IActionResult> PutEmployee(int id, Employee employee)
     {
-        
         if (id != employee.Id)
         {
             return BadRequest("ID in URL komt niet overeen met ID in het Employee-object.");
         }
-        
+
         _context.Entry(employee).State = EntityState.Modified;
 
         try
@@ -55,7 +69,6 @@ public class EmployeeController : ControllerBase
         }
         catch (DbUpdateConcurrencyException)
         {
-
             if (!_context.Employees.Any(e => e.Id == id))
             {
                 return NotFound("Employee niet gevonden.");
@@ -65,10 +78,9 @@ public class EmployeeController : ControllerBase
                 throw;
             }
         }
-        
+
         return NoContent();
     }
-
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteEmployee(int id)
@@ -78,10 +90,10 @@ public class EmployeeController : ControllerBase
         {
             return NotFound();
         }
-        
+
         _context.Remove(employee);
         await _context.SaveChangesAsync();
-        
+
         return NoContent();
     }
 }

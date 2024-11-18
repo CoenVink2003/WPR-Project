@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SQLitePCL;
 using Microsoft.EntityFrameworkCore;
 using WPR;
 
@@ -8,7 +7,7 @@ using WPR;
 [ApiController]
 public class CompanyCustomerController : ControllerBase
 {
-    private DatabaseContext _context = new DatabaseContext();
+    private readonly DatabaseContext _context;
     
     [HttpGet]
     public async Task<ActionResult<IEnumerable<CompanyCustomer>>> GetCompanyCustom()

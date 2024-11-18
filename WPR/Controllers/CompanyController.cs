@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SQLitePCL;
 using Microsoft.EntityFrameworkCore;
 using WPR;
 
@@ -8,7 +7,7 @@ using WPR;
 [ApiController]
 public class CompanyController : ControllerBase
 {
-    private DatabaseContext _context = new DatabaseContext();
+    private readonly DatabaseContext _context;
     
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Company>>> GetCompanies()
@@ -71,7 +70,7 @@ public class CompanyController : ControllerBase
 
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteCompnay(int id)
+    public async Task<IActionResult> DeleteCompany(int id)
     {
         var company = await _context.Companies.FindAsync(id);
         if (company == null)
