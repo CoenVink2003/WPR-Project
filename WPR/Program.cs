@@ -7,18 +7,28 @@ class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Voeg DatabaseContext toe aan de Dependency Injection container
-        builder.Services.AddDbContext<DatabaseContext>(options =>
+        builder.Services.AddDbContext<DatabaseContext>(options => 
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+        
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAllOrigins",
+                policy =>
+                {
+                    policy.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+        });
 
-        // Voeg controllers en andere services toe
+
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
+
         var app = builder.Build();
 
-        // Configureer de applicatie alleen voor development omgeving
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
@@ -28,8 +38,11 @@ class Program
         app.UseHttpsRedirection();
         app.UseRouting();
         
+        app.UseCors("AllowAllOrigins");
+
         app.MapControllers();
 
         app.Run();
+
     }
 }
