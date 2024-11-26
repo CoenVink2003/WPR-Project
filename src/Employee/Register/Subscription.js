@@ -17,13 +17,15 @@ function CompanySubscription() {
         );
     };
 
-    const handleSubmit = wrapperPOST("CreateCompanySubscription", "",
-        {
-            businessName,
-            address,
-            kvkNumber: kvkNumber.value
-        }
-    );
+    //
+    //
+    // const handleSubmit = wrapperPOST("CreateCompanySubscription", "",
+    //     {
+    //         companyName,
+    //         address,
+    //         kvkNumber: kvkNumber.value
+    //     }
+    // );
 
     const getIsFormValid = () => {
         return (
@@ -45,7 +47,7 @@ function CompanySubscription() {
 
     return (
         <div className="container d-flex justify-content-center align-items-center min-vh-100">
-            <form onSubmit={handleSubmit} className="w-50">
+            <form onSubmit="" className="w-50">
                 <fieldset className="border p-4 rounded shadow-sm">
                     <h2 className="mb-4 text-center">Company Subscription</h2>
                     <div className="form-group mb-3">

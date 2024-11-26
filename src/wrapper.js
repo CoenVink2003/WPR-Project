@@ -11,8 +11,10 @@ export async function wrapperPOST(controller, endpoint, data) {
         });
 
         if (response.ok) {
+            console.log(response);
             return true;
         } else {
+            console.log(response);
             return false;
         }
     } catch (error) {
