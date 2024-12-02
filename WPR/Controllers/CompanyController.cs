@@ -9,6 +9,11 @@ public class CompanyController : ControllerBase
 {
     private readonly DatabaseContext _context;
     
+    public CompanyController(DatabaseContext context)
+    {
+        _context = context ?? throw new ArgumentNullException(nameof(context)); // Gooi een fout als _context null is
+    }
+    
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Company>>> GetCompanies()
     {
@@ -29,8 +34,18 @@ public class CompanyController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Company>> PostCompany(Company company)
+    public async Task<ActionResult<Company>> PostCompany([FromBody] Company company)
     {
+        if (company == null)
+        {
+            return BadRequest("Company object is null");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        
         _context.Companies.Add(company);
         await _context.SaveChangesAsync();
 

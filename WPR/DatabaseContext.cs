@@ -34,6 +34,5 @@ namespace WPR
         public DbSet<CompanyCustomer> CompanyCustomers { get; set; }
         public DbSet<Company> Companies { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
-        public DbSet<SignUp> SignUps { get; set; }
     }
 }

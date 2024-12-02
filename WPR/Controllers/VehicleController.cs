@@ -14,12 +14,29 @@ public class VehicleController : ControllerBase
     {
         _context = context ?? throw new ArgumentNullException(nameof(context)); // Gooi een fout als _context null is
     }
-
+    
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Vehicle>>> GetVehicles()
+    public async Task<ActionResult<IEnumerable<Vehicle>>> GetVehicles(
+        [FromQuery] DateTime? startDate,
+        [FromQuery] DateTime? endDate,
+        [FromQuery] string vehicleType = "default")
     {
-        return await _context.Vehicles.ToListAsync();
+        try
+        {
+            if (vehicleType != "default")
+            {
+                return await _context.Vehicles.Where(v => v.VehicleType == vehicleType).ToListAsync();
+            }
+            
+            return await _context.Vehicles.ToListAsync();
+        }
+        catch (Exception ex)
+        {
+            // Log the error
+            return StatusCode(500, new { message = "Internal Server Error", error = ex.Message });
+        }
     }
+
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Vehicle>> GetVehicle(int id)

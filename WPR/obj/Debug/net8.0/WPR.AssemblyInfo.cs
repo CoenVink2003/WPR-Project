@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WPR")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dd4ef04591d63f70bcbf5ab1627ba05ac172488d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+993c8ae531c3a2f88acf6bf609d89a12cbe868f0")]
 [assembly: System.Reflection.AssemblyProductAttribute("WPR")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WPR")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

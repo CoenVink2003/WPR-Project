@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+namespace WPR.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WPR;
@@ -8,13 +8,29 @@ using WPR;
 public class CustomerController : ControllerBase
 {
     private readonly DatabaseContext _context;
-    
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<Customer>>> GetCustomers()
+
+    // Constructor voor Dependency Injection van de DatabaseContext
+    public CustomerController(DatabaseContext context)
     {
-        return await _context.Customers.ToListAsync();
+        _context = context ?? throw new ArgumentNullException(nameof(context)); // Gooi een fout als _context null is
     }
-    
+
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Customer>>> GetCustomers([FromQuery] string? email = null)
+    {
+        // Start with the base query
+        var query = _context.Customers.AsQueryable();
+
+        // Apply filter if the email parameter is provided
+        if (!string.IsNullOrEmpty(email))
+        {
+            query = query.Where(customer => customer.Email == email);
+        }
+
+        // Execute the query and return the result
+        return await query.ToListAsync();
+    }
+
     [HttpGet("{id}")]
     public async Task<ActionResult<Customer>> GetCustomer(int id)
     {
@@ -29,23 +45,32 @@ public class CustomerController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Customer>> PostCustomer(Customer customer)
+    public async Task<ActionResult<Customer>> PostCustomer([FromBody] Customer customer)
     {
+        if (customer == null)
+        {
+            return BadRequest("Customer object is null.");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
         _context.Customers.Add(customer);
         await _context.SaveChangesAsync();
 
         return CreatedAtAction("GetCustomer", new { id = customer.Id }, customer);
     }
-        
+
     [HttpPut("{id}")]
     public async Task<IActionResult> PutCustomer(int id, Customer customer)
     {
-        
         if (id != customer.Id)
         {
-            return BadRequest("ID in URL komt niet overeen met ID in het Employee-object.");
+            return BadRequest("ID in URL komt niet overeen met ID in het Customer-object.");
         }
-        
+
         _context.Entry(customer).State = EntityState.Modified;
 
         try
@@ -54,7 +79,6 @@ public class CustomerController : ControllerBase
         }
         catch (DbUpdateConcurrencyException)
         {
-
             if (!_context.Customers.Any(c => c.Id == id))
             {
                 return NotFound("Customer niet gevonden.");
@@ -64,10 +88,9 @@ public class CustomerController : ControllerBase
                 throw;
             }
         }
-        
+
         return NoContent();
     }
-
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCustomer(int id)
@@ -77,10 +100,10 @@ public class CustomerController : ControllerBase
         {
             return NotFound();
         }
-        
+
         _context.Remove(customer);
         await _context.SaveChangesAsync();
-        
+
         return NoContent();
     }
 }
