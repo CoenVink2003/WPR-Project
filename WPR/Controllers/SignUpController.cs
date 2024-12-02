@@ -16,9 +16,19 @@ public class SignUpController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<SignUp>>> GetSignUps()
+    public async Task<ActionResult<IEnumerable<SignUp>>> GetSignUps([FromQuery] string? email = null)
     {
-        return await _context.SignUps.ToListAsync();
+        // Start with the base query
+        var query = _context.SignUps.AsQueryable();
+
+        // Apply filter if the email parameter is provided
+        if (!string.IsNullOrEmpty(email))
+        {
+            query = query.Where(signUp => signUp.Email == email);
+        }
+
+        // Execute the query and return the result
+        return await query.ToListAsync();
     }
 
     [HttpGet("{id}")]
