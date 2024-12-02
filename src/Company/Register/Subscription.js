@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { wrapperPOST } from "../../wrapper";
 
 function CompanySubscription() {
-    const [businessName, setBusinessName] = useState("");
+    const [companyName, setCompanyName] = useState("");
     const [address, setAddress] = useState("");
     const [kvkNumber, setKvkNumber] = useState({
         value: "",
@@ -29,7 +29,7 @@ function CompanySubscription() {
 
     const getIsFormValid = () => {
         return (
-            businessName &&
+            companyName &&
             address &&
             kvkNumber.value.length === 8 &&
             !isNaN(kvkNumber.value)
@@ -37,7 +37,7 @@ function CompanySubscription() {
     };
 
     const clearForm = () => {
-        setBusinessName("");
+        setCompanyName("");
         setAddress("");
         setKvkNumber({
             value: "",
@@ -56,11 +56,11 @@ function CompanySubscription() {
                         </label>
                         <input
                             className="form-control"
-                            value={businessName}
+                            value={companyName}
                             onChange={(e) => {
-                                setBusinessName(e.target.value);
+                                setCompanyName(e.target.value);
                             }}
-                            placeholder="Bedrijfsnaam"
+                            placeholder="companyName"
                             required
                         />
                     </div>

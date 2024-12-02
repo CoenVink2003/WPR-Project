@@ -2,7 +2,9 @@ import './Login.css';
 import { useState } from "react";
 import { validateEmail } from "../../utils";
 import bcrypt from "bcryptjs";
-import {wrapperPOST} from "../../wrapper";
+import {wrapperGET, wrapperPOST} from "../../wrapper";
+import { useNavigate } from "react-router-dom";
+
 
 function EmployeeLogin() {
     const [email, setEmail] = useState({
@@ -21,8 +23,8 @@ function EmployeeLogin() {
     const navigate = useNavigate();
 
     const ErrorBox = () => {
-        const hasPasswordError = password.isTouched && password.value.length < 8;
         const hasEmailError = email.isTouched && !validateEmail(email.value);
+        const hasPasswordError = !passwordCorrect.value;
 
         if (!hasPasswordError && !hasEmailError) {
             return(""); // Don't render anything if there are no errors
@@ -31,8 +33,8 @@ function EmployeeLogin() {
         return (
             <div className="alert alert-danger" style={{ paddingBottom: 0 }}>
                 <ul>
-                    {hasPasswordError && (
-                        <li className="m-0">Wachtwoord dient minimaal 8 tekens te bevatten</li>
+                    {hasPasswordError &&(
+                        <li className="m-0">Deze combinatie is niet juist!</li>
                     )}
                     {hasEmailError &&(
                         <li className="m-0">Geen geldig email adres.</li>
@@ -107,7 +109,7 @@ function EmployeeLogin() {
         <div className="App">
             <div className="background">
                 <div className="loginContainer p-4 dp-fadein-prep">
-                    <form onSubmit="">
+                    <form onSubmit={handleSubmit}>
                         <h2 className="mb-2 text-center">Log in</h2>
                         <div className="border-3 border-bottom border-dark w-25 m-auto mt-0 mb-3"></div>
                         <ErrorBox />
@@ -139,7 +141,7 @@ function EmployeeLogin() {
                             }}
                             placeholder="Wachtwoord"
                         />
-                        <a href="/Employee/register" className="float-end mt-3 text-dark">Heb je nog geen account? Registreer hier!</a>
+                        <a href="/Customer/register" className="float-end mt-3 text-dark">Heb je nog geen account? Registreer hier!</a>
                         <button
                             type="submit"
                             className={`btn ${getIsFormValid() ? 'btn-primary' : 'btn-danger'} btn-block w-100`}

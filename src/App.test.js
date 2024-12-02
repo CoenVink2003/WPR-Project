@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import Register from './Employee/Register/Register';
+import Register from './Customer/Register/Register';
 //
 // test('renders learn react link', () => {
 //   render(<Register />);

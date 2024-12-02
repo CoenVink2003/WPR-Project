@@ -61,7 +61,7 @@ function EmployeeRegister() {
             clearForm();
 
             // Navigeer naar de login pagina
-            navigate("/Employee/login");
+            navigate("/Customer/login");
         } catch (error) {
             // Fout afhandelen
             console.error("Error during signup:", error);
@@ -88,6 +88,8 @@ function EmployeeRegister() {
             <div className="background">
                 <div className="registerContainer p-4 dp-fadein-prep">
                     <form onSubmit={handleSubmit}>
+
+
                         <h2 className="mb-2 text-center">Sign Up</h2>
                         <div className="border-3 border-bottom border-dark w-25 m-auto mt-0 mb-3"></div>
                         <ErrorBox />
@@ -139,7 +141,7 @@ function EmployeeRegister() {
                             }}
                             placeholder="Wachtwoord"
                         />
-                            <a href="/Employee/login" className="float-end mt-3 text-dark">Heb je al een account? Log in!</a>
+                            <a href="/Customer/login" className="float-end mt-3 text-dark">Heb je al een account? Log in!</a>
                             <button
                                 type="submit"
                                 className={`btn ${getIsFormValid() ? 'btn-primary' : 'btn-danger'} btn-block w-100`}
