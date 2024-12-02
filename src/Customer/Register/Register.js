@@ -4,6 +4,7 @@ import { validateEmail } from "../../utils";
 import { wrapperPOST } from "../../wrapper";
 import bcrypt from 'bcryptjs';
 import { useNavigate } from "react-router-dom";
+import validator from "validator";
 
 function CustomerRegister() {
     const [firstName, setFirstName] = useState("");
@@ -20,19 +21,36 @@ function CustomerRegister() {
     // Plaats useNavigate hier bovenaan het component
     const navigate = useNavigate();
 
-    const ErrorBox = () => {
-        const hasPasswordError = password.isTouched && password.value.length < 8;
+    const ErrorBox = ({ password, email }) => {
+        const passwordValidation = validatePassword(password.value);
+        const hasPasswordError = password.isTouched && !passwordValidation.isValid;
         const hasEmailError = email.isTouched && !validateEmail(email.value);
 
         if (!hasPasswordError && !hasEmailError) {
-            return(""); // Don't render anything if there are no errors
+            return ""; // Don't render anything if there are no errors
         }
 
         return (
             <div className="alert alert-danger" style={{ paddingBottom: 0 }}>
                 <ul>
                     {hasPasswordError && (
-                        <li className="m-0">Wachtwoord dient minimaal 8 tekens te bevatten</li>
+                        <>
+                            {!passwordValidation.minLength && (
+                                <li className="m-0">Wachtwoord dient minimaal 8 tekens te bevatten</li>
+                            )}
+                            {!passwordValidation.minLowercase && (
+                                <li className="m-0">Wachtwoord dient minimaal 1 kleine letter te bevatten</li>
+                            )}
+                            {!passwordValidation.minUppercase && (
+                                <li className="m-0">Wachtwoord dient minimaal 1 hoofdletter te bevatten</li>
+                            )}
+                            {!passwordValidation.minNumbers && (
+                                <li className="m-0">Wachtwoord dient minimaal 1 cijfer te bevatten</li>
+                            )}
+                            {!passwordValidation.minSymbols && (
+                                <li className="m-0">Wachtwoord dient minimaal 1 speciaal teken te bevatten</li>
+                            )}
+                        </>
                     )}
                     {hasEmailError && (
                         <li className="m-0">Geen geldig email adres.</li>
@@ -40,6 +58,22 @@ function CustomerRegister() {
                 </ul>
             </div>
         );
+    };
+
+
+    const validatePassword = (password) => {
+        const validation = {
+            minLength: password.length >= 8,
+            minLowercase: /[a-z]/.test(password),
+            minUppercase: /[A-Z]/.test(password),
+            minNumbers: /[0-9]/.test(password),
+            minSymbols: /[^a-zA-Z0-9]/.test(password),
+        };
+
+        return {
+            ...validation,
+            isValid: Object.values(validation).every(Boolean),
+        };
     };
 
     const handleSubmit = async (event) => {
@@ -50,7 +84,7 @@ function CustomerRegister() {
 
         try {
             // Wacht tot de wrapperPOST klaar is
-            await wrapperPOST("SignUp", "", {
+            await wrapperPOST("Customer", "", {
                 firstName,
                 lastName,
                 email: email.value,
@@ -76,10 +110,11 @@ function CustomerRegister() {
     }
 
     const getIsFormValid = () => {
+        const passwordValidation = validatePassword(password.value);
         return (
             firstName &&
             validateEmail(email.value) &&
-            password.value.length >= 8
+            passwordValidation.isValid
         );
     }
 
@@ -92,7 +127,7 @@ function CustomerRegister() {
 
                         <h2 className="mb-2 text-center">Sign Up</h2>
                         <div className="border-3 border-bottom border-dark w-25 m-auto mt-0 mb-3"></div>
-                        <ErrorBox />
+                        <ErrorBox password={password} email={email} />
                         <label className="form-label m-0"><b>Voornaam <span className="required">*</span></b></label>
                         <input
                             className="form-control"

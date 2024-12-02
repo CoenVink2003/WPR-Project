@@ -189,74 +189,80 @@ function CompanySignUp() {
                             className="form-control"
                             value={kvkNumber.value}
                             onChange={(e) => {
-                                setKvkNumber({...kvkNumber, value: e.target.value});
+                                setZipCode(e.target.value);
                             }}
-                            onBlur={() =>
-                                setKvkNumber({...kvkNumber, isTouched: true})
-                            }
-                            placeholder="KVK-nummer"
-                            required
+                            placeholder="Postcode"
                         />
-                        {kvkNumber.isTouched && (kvkNumber.value.length < 8 || isNaN(kvkNumber.value)) && (
-                            <div className="text-danger mt-1">
-                                <KvkNumberErrorMessage />
 
+                        <div class="row">
+                            <div className="col-md-6">
+                                <label className="form-label mt-3 mb-0"><b>Voornaam <span
+                                    className="required">*</span></b></label>
+                                <input
+                                    className="form-control"
+                                    value={firstName}
+                                    onChange={(e) => {
+                                        setFirstName(e.target.value);
+                                    }}
+                                    placeholder="Voornaam"
+                                />
                             </div>
-                        )}
-                    </div>
-                    <div className={"form-group mb-3"}>
-                        <label className="form-label mt-3 mb-0"><b>Email-adres</b> <span className="required">*</span></label>
+                            <div className="col-md-6">
+                                <label className="form-label mt-3 mb-0"><b>Achternaam</b></label>
+                                <input
+                                    className="form-control"
+                                    value={lastName}
+                                    onChange={(e) => {
+                                        setLastName(e.target.value);
+                                    }}
+                                    placeholder="Achternaam"
+                                />
+                            </div>
+                        </div>
+
+
+                        <label className="form-label mt-3 mb-0"><b>Email-adres</b> <span
+                            className="required">*</span></label>
                         <input
                             className="form-control"
                             type="email"
                             value={email.value}
                             onChange={(e) => {
-                                setEmail({ ...email, value: e.target.value });
-                            }}
-                            onBlur={() => {
-                                setEmail({ ...email, isTouched: true });
-                            }}
-                            placeholder="Email adres"
-                            required
-                        />
-                        {email.isTouched && !validateEmail(email.value) && (
-                            <div className="text-danger mt-1">
-                                <EmailErrorMessage />
-                            </div>
-                        )}
-                    </div>
-                    <div className= "form-group mb-3">
-                        <label className="form-label mt-3 mb-0"><b>Wachtwoord</b> <span className="required">*</span>
-                        </label>
-                        <input
-                            className="form-control"
-                            value={password.value}
-                            type="password"
-                            onChange={(e) => {
-                                setPassword({ ...password, value: e.target.value });
-                            }}
-                            onBlur={() => {
-                                setPassword({ ...password, isTouched: true });
-                            }}
-                            placeholder="Password"
-                        />
-                        {password.isTouched && password.value.length < 8 && (
-                            <div className="text-danger mt-1">
-                                <PasswordErrorMessage />
-                            </div>
-                        )}
-                    </div>
-                    <div className="form-group d-grid">
-                        <button
-                            type="submit"
-                            className="btn btn-primary"
-                            disabled={!getIsFormValid()}
-                        >
-                            Abonnement Aanmelden
-                        </button>
-                    </div>
-                </fieldset>
-            </form>
+                                    setEmail({...email, value: e.target.value});
+                                }}
+                                onBlur={() => {
+                                    setEmail({...email, isTouched: true});
+                                }}
+                                placeholder="Email adres"
+                                required
+                            />
+                            <label className="form-label mt-3 mb-0"><b>Wachtwoord</b> <span
+                                className="required">*</span>
+                            </label>
+                            <input
+                                className="form-control"
+                                value={password.value}
+                                type="password"
+                                onChange={(e) => {
+                                    setPassword({...password, value: e.target.value});
+                                }}
+                                onBlur={() => {
+                                    setPassword({...password, isTouched: true});
+                                }}
+                                placeholder="Wachtwoord"
+                            />
+                            <a href="/Customer/login" className="float-end mt-3 text-dark">Heb je al een account? Log
+                                in!</a>
+                            <button
+                                type="submit"
+                                className={`btn ${getIsFormValid() ? 'btn-primary' : 'btn-danger'} btn-block w-100`}
+                                disabled={!getIsFormValid()}
+                            >
+                                Aanmelden
+                            </button>
+                    </form>
+                </div>
+            </div>
         </div>
     );
 }
