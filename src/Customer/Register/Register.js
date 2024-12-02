@@ -5,7 +5,7 @@ import { wrapperPOST } from "../../wrapper";
 import bcrypt from 'bcryptjs';
 import { useNavigate } from "react-router-dom";
 
-function EmployeeRegister() {
+function CustomerRegister() {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState({
@@ -156,4 +156,4 @@ function EmployeeRegister() {
     );
 }
 
-export default EmployeeRegister;
+export default CustomerRegister;

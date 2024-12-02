@@ -3,9 +3,8 @@ import React from "react";
 function Homepage() {
     return (
         <>
-            {/* Navigatiebalk */}
             <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
-                <a className="navbar-brand d-flex align-items-center" href="#">
+                <a className="navbar-brand d-flex align-items-center" href="/">
                     <img
                         src="https://icons.getbootstrap.com/assets/icons/badge-4k.svg"
                         width="30"
@@ -29,24 +28,45 @@ function Homepage() {
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav ms-auto">
                         <li className="nav-item">
-                            <a className="nav-link active" href="#">
+                            <a className="nav-link active" href="/">
                                 Home
                             </a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="#particulier">
+                            <a className="nav-link" href="">
                                 Particulier
                             </a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="#zakelijk">
+                            <a className="nav-link" href="">
                                 Zakelijk
                             </a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="#about">
+                            <a className="nav-link" href="">
                                 Over Ons
                             </a>
+                        </li>
+                        <li className="nav-item">
+                            {/* Dropdown voor Log out */}
+                            <Dropdown align="end">
+                                <Dropdown.Toggle
+                                    variant="light"
+                                    id="logoutDropdown"
+                                    className="d-flex align-items-center border-0 bg-transparent"
+                                >
+                                    <img
+                                        src="https://icons.getbootstrap.com/assets/icons/person-circle.svg"
+                                        width="30"
+                                        height="30"
+                                        alt="Account"
+                                    />
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                    <Dropdown.Item href="/Customer/edit">Account bewerken</Dropdown.Item>
+                                    <Dropdown.Item href="/Customer/login">Uitloggen</Dropdown.Item>
+                                </Dropdown.Menu>
+                            </Dropdown>
                         </li>
                     </ul>
                 </div>
@@ -57,10 +77,10 @@ function Homepage() {
                 <h1 className="display-4">Welkom bij CarAndALL</h1>
                 <p className="lead">Jouw perfecte voertuig, altijd binnen bereik!</p>
                 <div className="mt-4">
-                    <a href="#particulier" className="btn btn-light btn-lg me-2">
+                    <a href="" className="btn btn-light btn-lg me-2">
                         Particulier
                     </a>
-                    <a href="#zakelijk" className="btn btn-secondary btn-lg">
+                    <a href="" className="btn btn-secondary btn-lg">
                         Zakelijk
                     </a>
                 </div>
@@ -75,7 +95,7 @@ function Homepage() {
                             Automerk
                         </label>
                         <select className="form-select" id="brand">
-                            <option>BMW</option>
+                        <option>BMW</option>
                             <option>Audi</option>
                             <option>Mercedes</option>
                         </select>
@@ -112,11 +132,9 @@ function Homepage() {
             {/* Zelf auto aanbieden */}
             <section className="bg-light py-5">
                 <div className="container text-center">
-                    <h2>Bekijk alle autos ?</h2>
-                    <p>
-                        Registreer je zelf en bekijk alle voertuig !
-                    </p>
-                    <a href="#register" className="btn btn-primary">
+                    <h2>Bekijk alle auto's</h2>
+                    <p>Registreer je zelf en bekijk alle voertuigen!</p>
+                    <a href="/Customer/register" className="btn btn-primary">
                         Registreer je zelf maar!
                     </a>
                 </div>
@@ -128,7 +146,7 @@ function Homepage() {
                 <div className="row text-center">
                     <div className="col-md-4">
                         <img
-                            src="https://icons.getbootstrap.com/assets/icons/badge-4k.svg"
+                            src="https://icons.getbootstrap.com/assets/icons/car-front-fill.svg"
                             alt="Voertuig 1"
                             width="100"
                             height="100"
@@ -137,7 +155,7 @@ function Homepage() {
                     </div>
                     <div className="col-md-4">
                         <img
-                            src="https://icons.getbootstrap.com/assets/icons/badge-4k.svg"
+                            src="https://icons.getbootstrap.com/assets/icons/car-front-fill.svg"
                             alt="Voertuig 2"
                             width="100"
                             height="100"
@@ -146,7 +164,7 @@ function Homepage() {
                     </div>
                     <div className="col-md-4">
                         <img
-                            src="https://icons.getbootstrap.com/assets/icons/badge-4k.svg"
+                            src="https://icons.getbootstrap.com/assets/icons/car-front-fill.svg"
                             alt="Voertuig 3"
                             width="100"
                             height="100"
