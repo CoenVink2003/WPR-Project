@@ -1,24 +1,24 @@
 import './Login.css';
-import { useState } from "react";
-import { validateEmail } from "../../utils";
+import React, { useState } from "react";
+import {wrapperGET, wrapperPOST} from "../../wrapper";
+import { validateEmail} from "../../utils";
 import bcrypt from "bcryptjs";
-import {wrapperPOST} from "../../wrapper";
+import { useNavigate} from "react-router-dom";
 
-function EmployeeLogin() {
+function LoginCompany() {
     const [email, setEmail] = useState({
         value: "",
         isTouched: false,
-    });
+    })
     const [password, setPassword] = useState({
         value: "",
         isTouched: false,
     });
 
-    const [passwordCorrect, setPasswordCorrect] = useState({
-        value: 1,
-    });
-
     const navigate = useNavigate();
+
+
+
 
     const ErrorBox = () => {
         const hasPasswordError = password.isTouched && password.value.length < 8;
@@ -34,7 +34,7 @@ function EmployeeLogin() {
                     {hasPasswordError && (
                         <li className="m-0">Wachtwoord dient minimaal 8 tekens te bevatten</li>
                     )}
-                    {hasEmailError &&(
+                    {hasEmailError && (
                         <li className="m-0">Geen geldig email adres.</li>
                     )}
                 </ul>
@@ -44,10 +44,10 @@ function EmployeeLogin() {
 
     const getIsFormValid = () => {
         return (
-            validateEmail(email.value),
+            validateEmail(email.value) &&
             password.value.length >= 8
         );
-    }
+    };
 
     const clearForm = () => {
         setEmail({
@@ -57,43 +57,26 @@ function EmployeeLogin() {
         setPassword({
             value: "",
             isTouched: false,
-        });
-    }
+        })
+    };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        let passwordCorrect = 1;
 
         try {
             // Wacht tot de wrapperPOST klaar is
-            let info = await wrapperGET("SignUp", "", {
-                email: email.value,
-            });
+            let info = await wrapperGET("SignUp", "");
 
-            if(info.length == 1)
-            {
-                const doesPasswordMatch = bcrypt.compareSync(password.value, info[0].password);
-                if(doesPasswordMatch) {
-                    clearForm();
+            console.log(info);
 
-                    sessionStorage.setItem("employee_id", info[0].id);
-                    sessionStorage.setItem("first_name", info[0].first_name);
-                    sessionStorage.setItem("last_name", info[0].last_name);
+            const doesPasswordMatch = bcrypt.compareSync(password.value, info.password);
+            clearForm();
+            if(doesPasswordMatch) {
+                clearForm();
 
-                    // Navigeer naar de login pagina
-                    navigate("/");
-                }
-                else
-                {
-                    setPasswordCorrect(0);
-                }
+                // Navigeer naar de login pagina
+                navigate("/Homepage/homepage");
             }
-            else
-            {
-                setPasswordCorrect(0);
-            }
-
-
 
         } catch (error) {
             // Fout afhandelen
@@ -101,17 +84,15 @@ function EmployeeLogin() {
         }
     };
 
-
-
     return (
         <div className="App">
             <div className="background">
                 <div className="loginContainer p-4 dp-fadein-prep">
-                    <form onSubmit="">
-                        <h2 className="mb-2 text-center">Log in</h2>
+                    <form onSubmit= { handleSubmit }>
+                        <h2 className="mb-2 text-center">Bedrijf Login</h2>
                         <div className="border-3 border-bottom border-dark w-25 m-auto mt-0 mb-3"></div>
                         <ErrorBox />
-                        <label className="form-label mt-3 mb-0"><b>Email-adres</b> <span className="required">*</span></label>
+                        <label className="form-label mt-3 mb-0"><b>E-mailadres</b> <span className="required">*</span></label>
                         <input
                             className="form-control"
                             type="email"
@@ -122,7 +103,7 @@ function EmployeeLogin() {
                             onBlur={() => {
                                 setEmail({ ...email, isTouched: true });
                             }}
-                            placeholder="Email adres"
+                            placeholder="Email address"
                             required
                         />
                         <label className="form-label mt-3 mb-0"><b>Wachtwoord</b> <span className="required">*</span>
@@ -137,9 +118,9 @@ function EmployeeLogin() {
                             onBlur={() => {
                                 setPassword({ ...password, isTouched: true });
                             }}
-                            placeholder="Wachtwoord"
+                            placeholder="Password"
                         />
-                        <a href="/Employee/register" className="float-end mt-3 text-dark">Heb je nog geen account? Registreer hier!</a>
+                        <a href="/Company/register" className="float-end mt-3 text-dark">Heb je nog geen account? Registreer hier!</a>
                         <button
                             type="submit"
                             className={`btn ${getIsFormValid() ? 'btn-primary' : 'btn-danger'} btn-block w-100`}
@@ -154,4 +135,4 @@ function EmployeeLogin() {
     );
 }
 
-export default EmployeeLogin;
+export default LoginCompany;
