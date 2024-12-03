@@ -1,6 +1,114 @@
-import React from "react";
+import React, { useState } from "react";
+import { Dropdown } from "react-bootstrap";
+import $ from 'jquery';
+import 'jquery-ui/ui/widgets/datepicker';
+import 'jquery-ui/themes/base/all.css';
+import {validateEmail} from "../utils";
+import {wrapperGET} from "../wrapper";
+import { useEffect } from 'react';
+
+
 
 function Homepage() {
+
+    const [vehicleType, setVehicleType] = useState({
+        value: "",
+    });
+
+    const [startDate, setStartDate] = useState({
+        value: "",
+    });
+
+    const [endDate, setEndDate] = useState({
+        value: "",
+    });
+
+
+    const VehicleOverview = () => {
+        const [vehicles, setVehicles] = useState([]);
+        const [isLoading, setIsLoading] = useState(true);
+        const [error, setError] = useState(null);
+
+        useEffect(() => {
+            const fetchVehicles = async () => {
+                try {
+                    const data = await wrapperGET("Vehicle", "", {
+                        startDate: startDate.value,
+                        endDate: endDate.value,
+                        vehicleType: vehicleType.value ?? 'Car',
+                    });
+                    setVehicles(data);
+                } catch (err) {
+                    console.error("Error fetching vehicles:", err);
+                    setError("Failed to load vehicles.");
+                } finally {
+                    setIsLoading(false);
+                }
+            };
+
+            fetchVehicles();
+        }, [startDate.value, endDate.value, vehicleType.value]);
+
+        if (isLoading) {
+            return <p>Loading...</p>;
+        }
+
+        if (error) {
+            return <p>{error}</p>;
+        }
+
+        if (vehicles.length === 0) {
+            return <p>No vehicles available.</p>;
+        }
+
+        const vehicleTypeMap = {
+            Car: 'Auto',
+            Caravan: 'Caravan',
+            Camper: 'Camper',
+        };
+
+        return (
+            <div className="row">
+                {vehicles.map((vehicle, index) => (
+                    <div className="col-3 mb-3" key={vehicle.id}>
+                        <div className="card">
+                            <h5 className="card-header">{vehicle.brand} {vehicle.type}</h5>
+                            <div className="card-body p-0">
+                                <img src="no-image.jpg" className="w-100"/>
+
+                                <div className="px-2">
+                                    <table className="table table-bordered table-striped mt-2 p-2">
+                                        <tbody>
+                                            <tr>
+                                                <td className="fw-bold">Type</td>
+                                                <td>{vehicleTypeMap[vehicle.vehicleType] || 'Onbekend'}</td>
+                                            </tr>
+                                            <tr>
+                                                <td className="fw-bold">Merk</td>
+                                                <td>{vehicle.brand} {vehicle.type}</td>
+                                            </tr>
+                                            <tr>
+                                                <td className="fw-bold">Kenteken</td>
+                                                <td>{vehicle.licencePlate}</td>
+                                            </tr>
+                                            <tr>
+                                                <td className="fw-bold">Kleur</td>
+                                                <td>{vehicle.color}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <button className="btn btn-primary w-100">
+                                    Huur deze auto
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        );
+    };
+
     return (
         <>
             <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
@@ -72,7 +180,6 @@ function Homepage() {
                 </div>
             </nav>
 
-            {/* Hero Section */}
             <header className="bg-primary text-white text-center py-5">
                 <h1 className="display-4">Welkom bij CarAndALL</h1>
                 <p className="lead">Jouw perfecte voertuig, altijd binnen bereik!</p>
@@ -86,50 +193,6 @@ function Homepage() {
                 </div>
             </header>
 
-            {/* Zoekfilters */}
-            <section className="container my-5">
-                <h2 className="text-center mb-4">Zoek jouw auto</h2>
-                <form className="row g-3">
-                    <div className="col-md-4">
-                        <label htmlFor="brand" className="form-label">
-                            Automerk
-                        </label>
-                        <select className="form-select" id="brand">
-                        <option>BMW</option>
-                            <option>Audi</option>
-                            <option>Mercedes</option>
-                        </select>
-                    </div>
-                    <div className="col-md-4">
-                        <label htmlFor="type" className="form-label">
-                            Model
-                        </label>
-                        <select className="form-select" id="type">
-                            <option>GTS</option>
-                            <option>R8</option>
-                            <option>GTR BLACK SERIES</option>
-                        </select>
-                    </div>
-                    <div className="col-md-4">
-                        <label htmlFor="price" className="form-label">
-                            Prijsklasse
-                        </label>
-                        <select className="form-select" id="price">
-                            <option>€10.000 - €20.000</option>
-                            <option>€20.000 - €30.000</option>
-                            <option>€30.000 - €40.000</option>
-                            <option>€40.000+</option>
-                        </select>
-                    </div>
-                    <div className="col-12 text-center">
-                        <button type="submit" className="btn btn-primary mt-3">
-                            Zoek
-                        </button>
-                    </div>
-                </form>
-            </section>
-
-            {/* Zelf auto aanbieden */}
             <section className="bg-light py-5">
                 <div className="container text-center">
                     <h2>Bekijk alle auto's</h2>
@@ -140,38 +203,50 @@ function Homepage() {
                 </div>
             </section>
 
-            {/* Recente gehuurde voertuigen */}
             <section className="container my-5">
-                <h2 className="text-center mb-4">Recente gehuurde voertuigen</h2>
-                <div className="row text-center">
+                <h2 className="text-center mb-4">Zoek jouw auto</h2>
+                <form className="row g-3">
                     <div className="col-md-4">
-                        <img
-                            src="https://icons.getbootstrap.com/assets/icons/car-front-fill.svg"
-                            alt="Voertuig 1"
-                            width="100"
-                            height="100"
-                        />
-                        <p>BMW M4 GTS</p>
+                        <label htmlFor="vehicleType" className="form-label">
+                            <b>Autotype</b>
+                        </label>
+                        <select className="form-select"
+                                id="vehicleType"
+                                value={vehicleType.value}
+                                onChange={(e) => setVehicleType({ value: e.target.value })}>
+                            <option value="default">-- Maak uw keuze --</option>
+                            <option value="Car">Auto</option>
+                            <option value="Caravan">Caravan</option>
+                            <option value="Camper">Camper</option>
+                        </select>
                     </div>
+
                     <div className="col-md-4">
-                        <img
-                            src="https://icons.getbootstrap.com/assets/icons/car-front-fill.svg"
-                            alt="Voertuig 2"
-                            width="100"
-                            height="100"
-                        />
-                        <p>AUDI R8</p>
+                        <label htmlFor="startDate" className="form-label">
+                            <b>Ophaaldatum</b>
+                        </label>
+                        <input type="text" className="form-control datepicker"
+                               id="startDate"
+                               value={startDate.value}
+                               onChange={(e) => setStartDate({ value: e.target.value })}/>
                     </div>
+
                     <div className="col-md-4">
-                        <img
-                            src="https://icons.getbootstrap.com/assets/icons/car-front-fill.svg"
-                            alt="Voertuig 3"
-                            width="100"
-                            height="100"
-                        />
-                        <p>Mercedes-AMG GTR</p>
+                        <label htmlFor="endDate" className="form-label">
+                            <b>Inleverdatum</b>
+                        </label>
+                        <input className="form-control datepicker"
+                               id="endDate"
+                               value={endDate.value}
+                               onChange={(e) => setEndDate({ value: e.target.value })}/>
                     </div>
-                </div>
+                </form>
+            </section>
+
+
+            <section className="container my-5">
+                <h2 className="text-center mb-4">Deze voertuigen passen binnen jouw zoekresultaten:</h2>
+                <VehicleOverview />
             </section>
 
             {/* Over Ons */}
@@ -182,7 +257,7 @@ function Homepage() {
                         Wij zijn gespecialiseerd in het vinden van de perfecte auto voor
                         jou, of je nu particulier of zakelijk zoekt. Met een breed scala
                         aan opties maken we het eenvoudig om een auto te vinden die past
-                        bij jouw behoeften en budget.--chatGPT
+                        bij jouw behoeften en budget.
                     </p>
                 </div>
             </section>
@@ -190,7 +265,7 @@ function Homepage() {
             {/* Footer */}
             <footer className="bg-dark text-white py-3 text-center">
                 <p className="mb-0">
-                    © 2024 CarAndALL. Alle rechten voorbehouden.
+                    ©️ 2024 CarAndALL. Alle rechten voorbehouden.
                 </p>
             </footer>
         </>

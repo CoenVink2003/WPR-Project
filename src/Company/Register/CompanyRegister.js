@@ -1,193 +1,203 @@
 import './Register.css';
-import React, { useState } from "react";
+import { useState } from "react";
+import { validateEmail } from "../../utils";
 import { wrapperPOST } from "../../wrapper";
-import { validateEmail} from "../../utils";
+import bcrypt from 'bcryptjs';
+import { useNavigate } from "react-router-dom";
+import validator from "validator";
 
-function CompanySignUp() {
+function CompanyRegister() {
     const [companyName, setCompanyName] = useState("");
-    const [address, setAddress] = useState("");
-    const [city, setCity] = useState("");
-    const [zipCode, setZipCode] = useState("");
+    const [kvkNumber, setKVKNumber] = useState("");
+    const [streetName, setStreetName] = useState("");
     const [houseNumber, setHouseNumber] = useState("");
-
-    const [kvkNumber, setKvkNumber] = useState({
-        value: "",
-        isTouched: false,
-    });
+    const [zipCode, setZipCode] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState({
         value: "",
         isTouched: false,
-    })
+    });
     const [password, setPassword] = useState({
         value: "",
         isTouched: false,
     });
 
+    // Plaats useNavigate hier bovenaan het component
+    const navigate = useNavigate();
 
+    const ErrorBox = ({ password, email }) => {
+        const passwordValidation = validatePassword(password.value);
+        const hasPasswordError = password.isTouched && !passwordValidation.isValid;
+        const hasEmailError = email.isTouched && !validateEmail(email.value);
 
-    const KvkNumberErrorMessage = () => {
+        if (!hasPasswordError && !hasEmailError) {
+            return ""; // Don't render anything if there are no errors
+        }
+
         return (
-            <p className="FieldError">KVK nummer dient uit 8 cijfers te bestaan.</p>
+            <div className="alert alert-danger" style={{ paddingBottom: 0 }}>
+                <ul>
+                    {hasPasswordError && (
+                        <>
+                            {!passwordValidation.minLength && (
+                                <li className="m-0">Wachtwoord dient minimaal 8 tekens te bevatten</li>
+                            )}
+                            {!passwordValidation.minLowercase && (
+                                <li className="m-0">Wachtwoord dient minimaal 1 kleine letter te bevatten</li>
+                            )}
+                            {!passwordValidation.minUppercase && (
+                                <li className="m-0">Wachtwoord dient minimaal 1 hoofdletter te bevatten</li>
+                            )}
+                            {!passwordValidation.minNumbers && (
+                                <li className="m-0">Wachtwoord dient minimaal 1 cijfer te bevatten</li>
+                            )}
+                            {!passwordValidation.minSymbols && (
+                                <li className="m-0">Wachtwoord dient minimaal 1 speciaal teken te bevatten</li>
+                            )}
+                        </>
+                    )}
+                    {hasEmailError && (
+                        <li className="m-0">Geen geldig email adres.</li>
+                    )}
+                </ul>
+            </div>
         );
     };
 
-    const EmailErrorMessage = () => {
-        return (
-            <p className="EmailError">Dit E-mailadres is niet geldig</p>
-        );
-    };
-
-    const PasswordErrorMessage = () => {
-        return (
-            <p className="FieldError">Uw wachtwoord dient minimaal 8 tekens te bevatten</p>
-        );
-    };
-
-
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        wrapperPOST("Company", "SignUp", {
-            companyName,
-            address,
-            city,
-            zipCode,
-            houseNumber,
-            kvkNumber: kvkNumber.value,
-            email: email.value,
-            password: password.value
-        });
 
-        clearForm();
-        window.location.href = "/Employee/login"
+        // Hash het wachtwoord
+        let hashedPassword = bcrypt.hashSync(password.value, 10);
+
+        try {
+            // Wacht tot de wrapperPOST klaar is
+            await wrapperPOST("Company", "", {
+                CompanyName: companyName,
+                KvkNumber: kvkNumber,
+                StreetName: streetName,
+                HouseNumber: houseNumber,
+                ZipCode: zipCode,
+                FirstName: firstName,
+                LastName: lastName,
+                email: email.value,
+                password: hashedPassword,
+            });
+
+            // Formulier leegmaken na succesvolle registratie
+            clearForm();
+
+            // Navigeer naar de login pagina
+            navigate("/Customer/login");
+        } catch (error) {
+            // Fout afhandelen
+            console.error("Error during signup:", error);
+        }
     };
 
+    function clearForm() {
+        setCompanyName("");
+        setKVKNumber("");
+        setStreetName("");
+        setHouseNumber("");
+        setZipCode("");
+        setFirstName("");
+        setLastName("");
+        setEmail({ value: "", isTouched: false });
+        setPassword({ value: "", isTouched: false });
+    }
+
+    const validatePassword = (password) => {
+        const validation = {
+            minLength: password.length >= 8,
+            minLowercase: /[a-z]/.test(password),
+            minUppercase: /[A-Z]/.test(password),
+            minNumbers: /[0-9]/.test(password),
+            minSymbols: /[^a-zA-Z0-9]/.test(password),
+        };
+
+        return {
+            ...validation,
+            isValid: Object.values(validation).every(Boolean),
+        };
+    };
 
     const getIsFormValid = () => {
+        const passwordValidation = validatePassword(password.value);
         return (
-            companyName &&
-            address &&
-            city &&
-            zipCode &&
-            houseNumber &&
-            kvkNumber.value.length === 8 &&
-            !isNaN(kvkNumber.value) &&
+            firstName &&
             validateEmail(email.value) &&
-            password.value.length >= 8
+            passwordValidation.isValid
         );
-    };
-
-    const clearForm = () => {
-        setCompanyName("");
-        setAddress("");
-        setCity("");
-        setZipCode("");
-        setHouseNumber("");
-        setKvkNumber({
-            value: "",
-            isTouched: false,
-        });
-        setEmail({
-            value: "",
-            isTouched: false,
-        });
-        setPassword({
-            value: "",
-            isTouched: false,
-        })
-    };
-
-    /*
-    * <div class="row">
-
-    <div class="col-md-6">
-        <label>Full Name</label>
-        <div class="form-group">
-            <asp:TextBox CssClass="form-control" ID="TextBox3" runat="server"
-                placeholder="Full Name"></asp:TextBox>
-        </div>
-    </div>
-
-    <div class="col-md-6">
-        <label>Date of Birth</label>
-        <div class="form-group">
-            <asp:TextBox CssClass="form-control" ID="TextBox4" runat="server"
-                placeholder="Date of Birth" TextMode="Date"></asp:TextBox>
-        </div>
-    </div>
-
-</div>
-    * */
+    }
 
     return (
-        <div className="container d-flex justify-content-center align-items-center min-vh-100">
-            <form onSubmit={handleSubmit} className="w-50">
-                <fieldset className="border p-4 rounded shadow-sm">
-                    <h2 className="mb-4 text-center">Company Subscription</h2>
-                    <div className="form-group mb-3">
-                        <label className="form-label">
-                            Bedrijfsnaam <sup>*</sup>
-                        </label>
+        <div className="App">
+            <div className="background">
+                <div className="registerContainer p-4 dp-fadein-prep">
+                    <form onSubmit={handleSubmit}>
+
+
+                        <h2 className="mb-2 text-center">Aanmelden Bedrijf</h2>
+                        <div className="border-3 border-bottom border-dark w-25 m-auto mt-0 mb-3"></div>
+                        <ErrorBox password={password} email={email} />
+                        <label className="form-label m-0"><b>Bedrijfsnaam <span
+                            className="required">*</span></b></label>
                         <input
                             className="form-control"
                             value={companyName}
                             onChange={(e) => {
                                 setCompanyName(e.target.value);
                             }}
-                            placeholder="ComapanyName"
-                            required
+                            placeholder="Bedrijfsnaam"
                         />
-                    </div>
-                    <div className="form-group mb-3">
-                        <label className="form-label">Address</label>
+
+                        <label className="form-label mt-3 mb-0"><b>KVK nummer <span
+                            className="required">*</span></b></label>
                         <input
                             className="form-control"
-                            value={address}
+                            value={kvkNumber}
                             onChange={(e) => {
-                                setAddress(e.target.value);
+                                setKVKNumber(e.target.value);
                             }}
-                            placeholder="Adres"
+                            placeholder="KVK nummer"
                         />
-                    </div>
-                    <div className="form-group mb-3">
-                        <label className="form-label">City</label>
-                        <input
-                            className="form-control"
-                            value={city}
-                            onChange={(e) => {
-                                setCity(e.target.value);
-                            }}
-                            placeholder="City"
-                        />
-                    </div>
-                    <div className="form-group mb-3">
-                        <label className="form-label">ZipCode</label>
+
+                        <div class="row">
+                            <div className="col-md-8">
+                                <label className="form-label mt-3 mb-0"><b>Straatnaam <span
+                                    className="required">*</span></b></label>
+                                <input
+                                    className="form-control"
+                                    value={streetName}
+                                    onChange={(e) => {
+                                        setStreetName(e.target.value);
+                                    }}
+                                    placeholder="Straatnaam"
+                                />
+                            </div>
+
+
+                            <div className="col-md-4">
+                                <label className="form-label mt-3 mb-0"><b>Huisnummer <span
+                                    className="required">*</span></b></label>
+                                <input
+                                    className="form-control"
+                                    value={houseNumber}
+                                    onChange={(e) => {
+                                        setHouseNumber(e.target.value);
+                                    }}
+                                    placeholder="Huisnummer"
+                                />
+                            </div>
+                        </div>
+
+                        <label className="form-label mt-3 mb-0"><b>Postcode <span
+                            className="required">*</span></b></label>
                         <input
                             className="form-control"
                             value={zipCode}
-                            onChange={(e) => {
-                                setZipCode(e.target.value);
-                            }}
-                            placeholder="ZipCode"
-                        />
-                    </div>
-                    <div className="form-group mb-3">
-                        <label className="form-label">HouseNumber</label>
-                        <input
-                            className="form-control"
-                            value={houseNumber}
-                            onChange={(e) => {
-                                setHouseNumber(e.target.value);
-                            }}
-                            placeholder="HouseNumber"
-                        />
-                    </div>
-                    <div className="form-group mb-3">
-                        <label className="form-label">
-                            KVK-nummer <sup>*</sup>
-                        </label>
-                        <input
-                            className="form-control"
-                            value={kvkNumber.value}
                             onChange={(e) => {
                                 setZipCode(e.target.value);
                             }}
@@ -267,4 +277,4 @@ function CompanySignUp() {
     );
 }
 
-export default CompanySignUp;
+export default CompanyRegister;
