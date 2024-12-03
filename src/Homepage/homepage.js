@@ -24,6 +24,15 @@ function Homepage() {
     });
 
 
+    const getImagePath = (vehicle) => {
+        const imageName = vehicle.vehicleType + '.gif';
+        return `/vehicles/${imageName}`;
+    };
+
+    const handleImageError = (e) => {
+        e.target.src = '/vehicles/no-image.jpg';
+    };
+
     const VehicleOverview = () => {
         const [vehicles, setVehicles] = useState([]);
         const [isLoading, setIsLoading] = useState(true);
@@ -74,27 +83,32 @@ function Homepage() {
                         <div className="card">
                             <h5 className="card-header">{vehicle.brand} {vehicle.type}</h5>
                             <div className="card-body p-0">
-                                <img src="no-image.jpg" className="w-100"/>
+                                {/* Dynamisch de afbeelding toevoegen met fallback op error */}
+                                <img
+                                    src={getImagePath(vehicle)}
+                                    className="w-100"
+                                    onError={handleImageError}
+                                />
 
                                 <div className="px-2">
                                     <table className="table table-bordered table-striped mt-2 p-2">
                                         <tbody>
-                                            <tr>
-                                                <td className="fw-bold">Type</td>
-                                                <td>{vehicleTypeMap[vehicle.vehicleType] || 'Onbekend'}</td>
-                                            </tr>
-                                            <tr>
-                                                <td className="fw-bold">Merk</td>
-                                                <td>{vehicle.brand} {vehicle.type}</td>
-                                            </tr>
-                                            <tr>
-                                                <td className="fw-bold">Kenteken</td>
-                                                <td>{vehicle.licencePlate}</td>
-                                            </tr>
-                                            <tr>
-                                                <td className="fw-bold">Kleur</td>
-                                                <td>{vehicle.color}</td>
-                                            </tr>
+                                        <tr>
+                                            <td className="fw-bold">Type</td>
+                                            <td>{vehicleTypeMap[vehicle.vehicleType] || 'Onbekend'}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="fw-bold">Merk</td>
+                                            <td>{vehicle.brand} {vehicle.type}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="fw-bold">Kenteken</td>
+                                            <td>{vehicle.licencePlate}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="fw-bold">Kleur</td>
+                                            <td>{vehicle.color}</td>
+                                        </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -108,6 +122,7 @@ function Homepage() {
             </div>
         );
     };
+
 
     return (
         <>
