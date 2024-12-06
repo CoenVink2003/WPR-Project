@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "viNCdGfNMxY=",
+  "dgSpecHash": "lhlhJLQNy/I=",
   "success": true,
   "projectFilePath": "/Users/timobrouwer/Documents/HHS/Jaar 2/Semester 3/Project/WPR/WPR.csproj",
   "expectedPackageFiles": [
@@ -60,6 +60,7 @@
     "/Users/timobrouwer/.nuget/packages/microsoft.aspnetcore.cryptography.keyderivation/8.0.10/microsoft.aspnetcore.cryptography.keyderivation.8.0.10.nupkg.sha512",
     "/Users/timobrouwer/.nuget/packages/microsoft.aspnetcore.identity.entityframeworkcore/8.0.10/microsoft.aspnetcore.identity.entityframeworkcore.8.0.10.nupkg.sha512",
     "/Users/timobrouwer/.nuget/packages/microsoft.aspnetcore.identity.ui/8.0.10/microsoft.aspnetcore.identity.ui.8.0.10.nupkg.sha512",
+    "/Users/timobrouwer/.nuget/packages/microsoft.aspnetcore.jsonpatch/9.0.0/microsoft.aspnetcore.jsonpatch.9.0.0.nupkg.sha512",
     "/Users/timobrouwer/.nuget/packages/microsoft.aspnetcore.openapi/8.0.10/microsoft.aspnetcore.openapi.8.0.10.nupkg.sha512",
     "/Users/timobrouwer/.nuget/packages/microsoft.aspnetcore.razor.language/6.0.24/microsoft.aspnetcore.razor.language.6.0.24.nupkg.sha512",
     "/Users/timobrouwer/.nuget/packages/microsoft.bcl.asyncinterfaces/7.0.0/microsoft.bcl.asyncinterfaces.7.0.0.nupkg.sha512",
@@ -78,7 +79,7 @@
     "/Users/timobrouwer/.nuget/packages/microsoft.codeanalysis.scripting.common/4.8.0/microsoft.codeanalysis.scripting.common.4.8.0.nupkg.sha512",
     "/Users/timobrouwer/.nuget/packages/microsoft.codeanalysis.workspaces.common/4.8.0/microsoft.codeanalysis.workspaces.common.4.8.0.nupkg.sha512",
     "/Users/timobrouwer/.nuget/packages/microsoft.codeanalysis.workspaces.msbuild/4.8.0/microsoft.codeanalysis.workspaces.msbuild.4.8.0.nupkg.sha512",
-    "/Users/timobrouwer/.nuget/packages/microsoft.csharp/4.5.0/microsoft.csharp.4.5.0.nupkg.sha512",
+    "/Users/timobrouwer/.nuget/packages/microsoft.csharp/4.7.0/microsoft.csharp.4.7.0.nupkg.sha512",
     "/Users/timobrouwer/.nuget/packages/microsoft.data.sqlclient/5.1.6/microsoft.data.sqlclient.5.1.6.nupkg.sha512",
     "/Users/timobrouwer/.nuget/packages/microsoft.data.sqlclient.sni.runtime/5.1.1/microsoft.data.sqlclient.sni.runtime.5.1.1.nupkg.sha512",
     "/Users/timobrouwer/.nuget/packages/microsoft.diasymreader/2.0.0/microsoft.diasymreader.2.0.0.nupkg.sha512",

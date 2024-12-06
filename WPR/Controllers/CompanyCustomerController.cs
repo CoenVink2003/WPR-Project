@@ -9,12 +9,6 @@ public class CompanyCustomerController : ControllerBase
 {
     private readonly DatabaseContext _context;
     
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<CompanyCustomer>>> GetCompanyCustom()
-    {
-        return await _context.CompanyCustomers.ToListAsync();
-    }
-    
     [HttpGet("{id}")]
     public async Task<ActionResult<Customer>> GetCustomer(int id)
     {
@@ -27,14 +21,63 @@ public class CompanyCustomerController : ControllerBase
 
         return customer;
     }
+    
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<CompanyCustomer>>> GetCompanyCustomers(
+        [FromQuery] int? companyId) // Haal CompanyId uit de querystring
+    {
+        try
+        {
+            if (companyId.HasValue)
+            {
+                // Filter op basis van CompanyId
+                var customers = await _context.CompanyCustomers
+                    .Where(c => c.Company.Id == companyId.Value)
+                    .ToListAsync();
+                return Ok(customers);
+            }
+        
+            // Als geen CompanyId wordt meegegeven, geef dan alle klanten terug
+            var allCustomers = await _context.CompanyCustomers.ToListAsync();
+            return Ok(allCustomers);
+        }
+        catch (Exception ex)
+        {
+            // Log de fout
+            return StatusCode(500, new { message = "Internal Server Error", error = ex.Message });
+        }
+    }
 
     [HttpPost]
-    public async Task<ActionResult<Customer>> PostCustomer(Customer customer)
+    public async Task<ActionResult> CreateCompanyCustomer([FromBody] CompanyCustomerDTO companyCustomerDto)
     {
-        _context.Customers.Add(customer);
-        await _context.SaveChangesAsync();
+        try
+        {
+            var company = await _context.Companies.FindAsync(companyCustomerDto.CompanyId); // Haal de juiste company op
+            if (company == null)
+            {
+                return BadRequest("Company not found");
+            }
 
-        return CreatedAtAction("GetCustomer", new { id = customer.Id }, customer);
+            var companyCustomer = new CompanyCustomer
+            {
+                FirstName = companyCustomerDto.FirstName,
+                LastName = companyCustomerDto.LastName,
+                Email = companyCustomerDto.Email,
+                Password = companyCustomerDto.Password,
+                IsManager = companyCustomerDto.IsManager,
+                Company = company // Wijs de gevonden company toe
+            };
+
+            _context.CompanyCustomers.Add(companyCustomer);
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "Internal Server Error", error = ex.Message });
+        }
     }
         
     [HttpPut("{id}")]

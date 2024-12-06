@@ -15,5 +15,6 @@ public class Vehicle
     public string LicencePlate { get; set; }
     public string Color { get; set; }
     public int Bought { get; set; }
+    public float Price { get; set; }
     public string VehicleType { get; set; }
 }

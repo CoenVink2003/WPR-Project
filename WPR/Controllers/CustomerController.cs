@@ -1,3 +1,6 @@
+using System.Text.Json;
+using Microsoft.AspNetCore.JsonPatch;
+
 namespace WPR.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -90,6 +93,60 @@ public class CustomerController : ControllerBase
         }
 
         return NoContent();
+    }
+    
+    [HttpPatch("{id}")]
+    public async Task<IActionResult> PatchCustomer(int id, [FromBody] JsonElement rawPatchData)
+    {
+        // Haal de klant op uit de database
+        var customer = await _context.Customers.FindAsync(id);
+        if (customer == null)
+        {
+            return NotFound("Customer not found.");
+        }
+
+        // Parse de inkomende JSON handmatig
+        var updatedCustomer = JsonSerializer.Deserialize<Customer>(
+            rawPatchData.GetRawText(),
+            new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
+        );
+
+        if (updatedCustomer == null)
+        {
+            return BadRequest("Invalid data.");
+        }
+
+        // Controleer en werk alleen de meegegeven velden bij
+        if (updatedCustomer.FirstName != null)
+            customer.FirstName = updatedCustomer.FirstName;
+
+        if (updatedCustomer.LastName != null)
+            customer.LastName = updatedCustomer.LastName;
+
+        if (updatedCustomer.Email != null)
+            customer.Email = updatedCustomer.Email;
+
+        if (updatedCustomer.Password != null)
+            customer.Password = updatedCustomer.Password;
+
+        // Sla de wijzigingen op
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!_context.Customers.Any(c => c.Id == id))
+            {
+                return NotFound("Customer not found.");
+            }
+            else
+            {
+                throw;
+            }
+        }
+
+        return NoContent(); // Retourneer 204 bij succesvolle update
     }
 
     [HttpDelete("{id}")]

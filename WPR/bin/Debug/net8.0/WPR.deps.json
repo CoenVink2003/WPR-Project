@@ -10,6 +10,7 @@
         "dependencies": {
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "8.0.10",
           "Microsoft.AspNetCore.Identity.UI": "8.0.10",
+          "Microsoft.AspNetCore.JsonPatch": "9.0.0",
           "Microsoft.AspNetCore.OpenApi": "8.0.10",
           "Microsoft.EntityFrameworkCore": "9.0.0",
           "Microsoft.EntityFrameworkCore.Design": "9.0.0",
@@ -642,6 +643,18 @@
           }
         }
       },
+      "Microsoft.AspNetCore.JsonPatch/9.0.0": {
+        "dependencies": {
+          "Microsoft.CSharp": "4.7.0",
+          "Newtonsoft.Json": "13.0.3"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.AspNetCore.JsonPatch.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.24.52903"
+          }
+        }
+      },
       "Microsoft.AspNetCore.OpenApi/8.0.10": {
         "dependencies": {
           "Microsoft.OpenApi": "1.6.14"
@@ -1182,7 +1195,7 @@
           }
         }
       },
-      "Microsoft.CSharp/4.5.0": {},
+      "Microsoft.CSharp/4.7.0": {},
       "Microsoft.Data.SqlClient/5.1.6": {
         "dependencies": {
           "Azure.Identity": "1.11.4",
@@ -1590,7 +1603,7 @@
       },
       "Microsoft.IdentityModel.Tokens/6.35.0": {
         "dependencies": {
-          "Microsoft.CSharp": "4.5.0",
+          "Microsoft.CSharp": "4.7.0",
           "Microsoft.IdentityModel.Logging": "6.35.0",
           "System.Security.Cryptography.Cng": "5.0.0"
         },
@@ -2597,6 +2610,13 @@
       "path": "microsoft.aspnetcore.identity.ui/8.0.10",
       "hashPath": "microsoft.aspnetcore.identity.ui.8.0.10.nupkg.sha512"
     },
+    "Microsoft.AspNetCore.JsonPatch/9.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-/4UONYoAIeexPoAmbzBPkVGA6KAY7t0BM+1sr0fKss2V1ERCdcM+Llub4X5Ma+LJ60oPp6KzM0e3j+Pp/JHCNw==",
+      "path": "microsoft.aspnetcore.jsonpatch/9.0.0",
+      "hashPath": "microsoft.aspnetcore.jsonpatch.9.0.0.nupkg.sha512"
+    },
     "Microsoft.AspNetCore.OpenApi/8.0.10": {
       "type": "package",
       "serviceable": true,
@@ -2723,12 +2743,12 @@
       "path": "microsoft.codeanalysis.workspaces.msbuild/4.8.0",
       "hashPath": "microsoft.codeanalysis.workspaces.msbuild.4.8.0.nupkg.sha512"
     },
-    "Microsoft.CSharp/4.5.0": {
+    "Microsoft.CSharp/4.7.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-kaj6Wb4qoMuH3HySFJhxwQfe8R/sJsNJnANrvv8WdFPMoNbKY5htfNscv+LHCu5ipz+49m2e+WQXpLXr9XYemQ==",
-      "path": "microsoft.csharp/4.5.0",
-      "hashPath": "microsoft.csharp.4.5.0.nupkg.sha512"
+      "sha512": "sha512-pTj+D3uJWyN3My70i2Hqo+OXixq3Os2D1nJ2x92FFo6sk8fYS1m1WLNTs0Dc1uPaViH0YvEEwvzddQ7y4rhXmA==",
+      "path": "microsoft.csharp/4.7.0",
+      "hashPath": "microsoft.csharp.4.7.0.nupkg.sha512"
     },
     "Microsoft.Data.SqlClient/5.1.6": {
       "type": "package",
