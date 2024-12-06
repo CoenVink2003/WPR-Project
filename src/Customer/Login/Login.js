@@ -68,7 +68,7 @@ function EmployeeLogin() {
 
         try {
             // Wacht tot de wrapperPOST klaar is
-            let info = await wrapperGET("SignUp", "", {
+            let info = await wrapperGET("Customer", "", {
                 email: email.value,
             });
 
@@ -78,9 +78,11 @@ function EmployeeLogin() {
                 if(doesPasswordMatch) {
                     clearForm();
 
-                    sessionStorage.setItem("employee_id", info[0].id);
-                    sessionStorage.setItem("first_name", info[0].first_name);
-                    sessionStorage.setItem("last_name", info[0].last_name);
+                    sessionStorage.setItem("customer_id", info[0].id);
+                    sessionStorage.setItem("customer_first_name", info[0].firstName);
+                    sessionStorage.setItem("customer_last_name", info[0].lastName);
+                    sessionStorage.setItem("customer_email", info[0].email);
+
 
                     // Navigeer naar de login pagina
                     navigate("/");

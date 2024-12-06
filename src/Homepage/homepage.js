@@ -6,6 +6,7 @@ import 'jquery-ui/themes/base/all.css';
 import {validateEmail} from "../utils";
 import {wrapperGET} from "../wrapper";
 import { useEffect } from 'react';
+import Header from "../parts/header";
 
 
 
@@ -25,7 +26,7 @@ function Homepage() {
 
 
     const getImagePath = (vehicle) => {
-        const imageName = vehicle.vehicleType + '.gif';
+        const imageName = "no-image.jpg"; //vehicle.vehicleType + '.gif';
         return `/vehicles/${imageName}`;
     };
 
@@ -109,12 +110,19 @@ function Homepage() {
                                             <td className="fw-bold">Kleur</td>
                                             <td>{vehicle.color}</td>
                                         </tr>
+                                        <tr>
+                                            <td className="fw-bold">Vanaf</td>
+                                            <td>{new Intl.NumberFormat('nl-NL', {
+                                                style: 'currency',
+                                                currency: 'EUR'
+                                            }).format(vehicle.price)}</td>
+                                        </tr>
                                         </tbody>
                                     </table>
                                 </div>
-                                <button className="btn btn-primary w-100">
+                                <a className="btn btn-primary w-100" href="/RentRequest/new?id={vehicle.id}">
                                     Huur deze auto
-                                </button>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -126,75 +134,7 @@ function Homepage() {
 
     return (
         <>
-            <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
-                <a className="navbar-brand d-flex align-items-center" href="/">
-                    <img
-                        src="https://icons.getbootstrap.com/assets/icons/badge-4k.svg"
-                        width="30"
-                        height="30"
-                        alt="logo"
-                        className="me-2"
-                    />
-                    CarAndALL
-                </a>
-                <button
-                    className="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarNav"
-                    aria-controls="navbarNav"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation"
-                >
-                    <span className="navbar-toggler-icon"></span>
-                </button>
-                <div className="collapse navbar-collapse" id="navbarNav">
-                    <ul className="navbar-nav ms-auto">
-                        <li className="nav-item">
-                            <a className="nav-link active" href="/">
-                                Home
-                            </a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="">
-                                Particulier
-                            </a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="">
-                                Zakelijk
-                            </a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="">
-                                Over Ons
-                            </a>
-                        </li>
-                        <li className="nav-item">
-                            {/* Dropdown voor Log out */}
-                            <Dropdown align="end">
-                                <Dropdown.Toggle
-                                    variant="light"
-                                    id="logoutDropdown"
-                                    className="d-flex align-items-center border-0 bg-transparent"
-                                >
-                                    <img
-                                        src="https://icons.getbootstrap.com/assets/icons/person-circle.svg"
-                                        width="30"
-                                        height="30"
-                                        alt="Account"
-                                    />
-                                </Dropdown.Toggle>
-                                <Dropdown.Menu>
-                                    <Dropdown.Item href="/Customer/edit">Account bewerken</Dropdown.Item>
-                                    <Dropdown.Item href="/Customer/login">Uitloggen</Dropdown.Item>
-                                </Dropdown.Menu>
-                            </Dropdown>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-
+            <Header />
             <header className="bg-primary text-white text-center py-5">
                 <h1 className="display-4">Welkom bij CarAndALL</h1>
                 <p className="lead">Jouw perfecte voertuig, altijd binnen bereik!</p>

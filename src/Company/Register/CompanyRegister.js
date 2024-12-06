@@ -28,10 +28,14 @@ function CompanyRegister() {
 
     const ErrorBox = ({ password, email }) => {
         const passwordValidation = validatePassword(password.value);
+        const zipcodeValidation = validateZipcode(zipCode);
+        const houseNumberValidation = validateHouseNumber(houseNumber);
+        const hasZipcodeError = zipCode.isTouched && !zipcodeValidation.isValid();
+        const hasHouseNumberError = houseNumber.isTouched && !houseNumberValidation.isValid();
         const hasPasswordError = password.isTouched && !passwordValidation.isValid;
         const hasEmailError = email.isTouched && !validateEmail(email.value);
 
-        if (!hasPasswordError && !hasEmailError) {
+        if (!hasPasswordError && !hasEmailError && !hasZipcodeError && !hasHouseNumberError) {
             return ""; // Don't render anything if there are no errors
         }
 
@@ -59,6 +63,12 @@ function CompanyRegister() {
                     )}
                     {hasEmailError && (
                         <li className="m-0">Geen geldig email adres.</li>
+                    )}
+                    {hasZipcodeError && (
+                        <li className="m-0">Geen geldige postcode</li>
+                    )}
+                    {hasHouseNumberError && (
+                        <li className="m-0">Geen geldig huisnummer</li>
                     )}
                 </ul>
             </div>
@@ -122,6 +132,16 @@ function CompanyRegister() {
             isValid: Object.values(validation).every(Boolean),
         };
     };
+
+    const validateZipcode = (zipcode) => {
+        const regex = /^[1-9][0-9]{3}[A-Za-z]{2}$/;
+        return regex.test(zipcode);
+    };
+
+    const validateHouseNumber = (houseNumber) => {
+        const regex = /^[0-9]+[a-zA-Z]?$/;
+        return regex.test(houseNumber);
+    }
 
     const getIsFormValid = () => {
         const passwordValidation = validatePassword(password.value);

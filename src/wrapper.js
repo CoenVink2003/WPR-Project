@@ -1,5 +1,6 @@
 let server_location = "https://localhost:7211/api/";
 
+
 export async function wrapperPOST(controller, endpoint, data) {
     try {
         const response = await fetch(server_location + controller + "/" + endpoint, {
@@ -22,7 +23,6 @@ export async function wrapperPOST(controller, endpoint, data) {
 
 export async function wrapperGET(controller, endpoint, data) {
     try {
-        const jsonString = JSON.stringify(data);
         const urlEncodedData = Object.entries(data)
             .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
             .join('&');
@@ -50,7 +50,7 @@ export async function wrapperGET(controller, endpoint, data) {
 export async function wrapperPUT(controller, endpoint, id, new_data) {
     try {
         const response = await fetch(server_location + controller + "/" + endpoint + "/" + id, {
-            method: 'PUT',
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
             },
