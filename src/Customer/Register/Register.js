@@ -5,6 +5,7 @@ import { wrapperPOST } from "../../wrapper";
 import bcrypt from 'bcryptjs';
 import { useNavigate } from "react-router-dom";
 import validator from "validator";
+import Email from "../../Email/Email";
 
 function CustomerRegister() {
     const [firstName, setFirstName] = useState("");
@@ -90,6 +91,10 @@ function CustomerRegister() {
                 email: email.value,
                 password: hashedPassword,
             });
+
+            Email(email.value, "Account aangemaakt", "Hoi " + firstName + " " + lastName + "\n\n" +
+                "Leuk dat je meedoet met ons leuke project! " +
+                "Coen wilde eigenlijk geen mail versturen. Maar dat doen we toch!");
 
             // Formulier leegmaken na succesvolle registratie
             clearForm();

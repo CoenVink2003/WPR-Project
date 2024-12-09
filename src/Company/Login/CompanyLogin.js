@@ -14,6 +14,10 @@ function LoginCompany() {
         value: "",
         isTouched: false,
     });
+    const [passwordCorrect, setPasswordCorrect] = useState({
+        value: 1,
+    });
+
 
     const navigate = useNavigate();
 
@@ -21,7 +25,7 @@ function LoginCompany() {
 
 
     const ErrorBox = () => {
-        const hasPasswordError = password.isTouched && password.value.length < 8;
+        const hasPasswordError = !password.value.value;
         const hasEmailError = email.isTouched && !validateEmail(email.value);
 
         if (!hasPasswordError && !hasEmailError) {
@@ -62,25 +66,50 @@ function LoginCompany() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        let passwordCorrect = 1;
 
         try {
             // Wacht tot de wrapperPOST klaar is
-            let info = await wrapperGET("SignUp", "");
+            let info = await wrapperGET("Company", "", {
+                email: email.value,
+            });
 
-            console.log(info);
+            if(info.length == 1)
+            {
+                const doesPasswordMatch = bcrypt.compareSync(password.value, info[0].password);
+                if(doesPasswordMatch) {
+                    clearForm();
 
-            const doesPasswordMatch = bcrypt.compareSync(password.value, info.password);
-            clearForm();
-            if(doesPasswordMatch) {
-                clearForm();
+                    sessionStorage.setItem("company_id", info[0].Id);
+                    sessionStorage.setItem("company_name", info[0].CompanyName);
+                    sessionStorage.setItem("company_kvknumber", info[0].KvkNumber);
+                    sessionStorage.setItem("company_streetname", info[0].StreetName);
+                    sessionStorage.setItem("company_housenumber", info[0].HouseNumber);
+                    sessionStorage.setItem("company_zipcode", info[0].ZipCode);
+                    sessionStorage.setItem("company_contactpersoon", info[0].FirstName);
+                    sessionStorage.setItem("company_lastname", info[0].LastName);
+                    sessionStorage.setItem("company_email", info[0].Email);
+                    sessionStorage.setItem("company_password", info[0].Password);
 
-                // Navigeer naar de login pagina
-                navigate("/Homepage/homepage");
+
+                    // Navigeer naar de login pagina
+                    navigate("/");
+                }
+                else
+                {
+                    setPasswordCorrect(0);
+                }
             }
+            else
+            {
+                setPasswordCorrect(0);
+            }
+
+
 
         } catch (error) {
             // Fout afhandelen
-            console.error("Error during signup:", error);
+            console.error("Error during Login:", error);
         }
     };
 

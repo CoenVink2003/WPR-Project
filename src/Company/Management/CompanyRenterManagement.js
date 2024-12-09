@@ -2,6 +2,7 @@
 import React, { useState} from "react";
 import {wrapperGET} from "../../wrapper";
 import { useEffect } from 'react'
+import Header from "../../parts/header";
 
 function CompanyRenterManagement ({companyId}) {
     const [renter, setRenter] = useState( [] );
@@ -42,6 +43,7 @@ function CompanyRenterManagement ({companyId}) {
         }
 
         return (
+            <>
             <div className="row">
                 {renter.map((CompanyCustomer, index) => (
                     <div className="col-3 mb-3" key={CompanyCustomer.id}>
@@ -75,11 +77,13 @@ function CompanyRenterManagement ({companyId}) {
                     </div>
                 ))}
             </div>
+            </>
         );
     }
 
 return (
     <div className="container-fluid">
+        <Header/>
         <div className="row">
             <div className="col">
 
@@ -95,8 +99,8 @@ return (
                         </div>
 
                         <div className="row mb-3">
-                            <div className="col text-right">
-                                <button id= "renterAdd" className="btn btn-primary">Toevoegen</button>
+                            <div className="col text-end">
+                                <a href="/RenterRegistration" className="btn btn-success">Toevoegen</a>
                             </div>
                         </div>
 

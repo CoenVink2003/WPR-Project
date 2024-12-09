@@ -72,6 +72,8 @@ function EmployeeLogin() {
                 email: email.value,
             });
 
+            console.log(info)
+
             if(info.length == 1)
             {
                 const doesPasswordMatch = bcrypt.compareSync(password.value, info[0].password);

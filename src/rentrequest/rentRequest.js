@@ -9,6 +9,7 @@ function NewRentRequest() //kijken of auto beschikbaar is op die dagen, prijs be
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
     const [opmerking, setOpmerking] = useState("");
+    const [totalPrice, setTotalPrice] = useState("");
 
     const navigate = useNavigate();
 
@@ -16,6 +17,7 @@ function NewRentRequest() //kijken of auto beschikbaar is op die dagen, prijs be
         setStartDate("");
         setEndDate("");
         setOpmerking("");
+        setTotalPrice("");
     }
 
     useEffect(() => {
@@ -52,7 +54,7 @@ function NewRentRequest() //kijken of auto beschikbaar is op die dagen, prijs be
 
 
 
-                console.log(carName);
+                console.log(searchParams.get("id"));
             }
     //}
 
@@ -87,29 +89,35 @@ function NewRentRequest() //kijken of auto beschikbaar is op die dagen, prijs be
                 <form onSubmit={handleSubmit}>
                     <h2 className="mb-2 text-center">Huurverzoek</h2>
                     //foto van de auto
-                    <p className="text-center"></p> /*naam van de auto*/
-                    <label className="form-label mt-3 mb-0"><b>Geef de startdatum van de huurtijd</b> <span
+                    <p className="text-center">De Racecolt</p>
+                    <br/>
+                    <label className="form-label mt-3 mb-0"><b>Ophaaldatum</b><span
                         className="required">*</span>
                     </label>
-                    <input type="text" id="startDate" name="startDate" className="datepicker" value={startDate.value}
+                    <br/>
+                    <input type="text" id="startDate" name="startDate" className="form-control datepicker" value={startDate.value}
                            onChange={(e) => {
                                setStartDate(e.target.value);
                            }}/>
-                    <label className="form-label mt-3 mb-0"><b>Geef de einddatum van de huurtijd</b> <span
+                    <br/>
+                    <label className="form-label mt-3 mb-0"><b>Inleverdatum</b> <span
                         className="required">*</span>
                     </label>
-                    <input type="text" id="endDate" name="endDate" className="datepicker" value={endDate.value}
+                    <br/>
+                    <input type="text"  id="endDate" name="endDate" className="form-control datepicker" value={endDate.value}
                            onChange={(e) => {
                                setEndDate(e.target.value);
                            }}/>
                     <br/>
-                    <label className="form-label mt-3 mb-0"><b>Vul hier uw opmerking in:</b> <span
+                    <label className="form-label mt-3 mb-0"><b>Opmerking:</b> <span
                         className="required">*</span>
                     </label><br/>
-                    <input type="text" value={opmerking.value}
+                    <input type="text" className="form-control" value={opmerking.value}
                            onChange={(e) => {
-                        setOpmerking(e.target.value);
-                    }}/>
+                               setOpmerking(e.target.value);
+                           }}/>
+                    <br/>
+                    <p><b>Totaalprijs:</b> &euro;420,69</p>
                     <button type="submit"
                             className={`btn ${getIsFormValid() ? 'btn-primary' : 'btn-danger'} btn-block w-100`}
                             disabled={!getIsFormValid()}

@@ -33,7 +33,7 @@ function Modal({ id, title, content }) {
 function SubscriptionCard({ title, features, price, modalId, modalContent }) {
     return (
         <div className="col-4 mb-3">
-            <div className="card text-center" style={{ marginLeft: 10, marginTop: 250 }}>
+            <div className="card text-center" style={{ marginLeft: 10, marginTop: 50 }}>
                 <h5 className="card-type" alt={title} />
                 <div className="card-body">
                     <h3 className="card-title">{title}</h3>
@@ -46,7 +46,7 @@ function SubscriptionCard({ title, features, price, modalId, modalContent }) {
                     </p>
                     <p className="card-text">{price.description}</p>
                     <a href="" data-bs-toggle="modal" data-bs-target={`#${modalId}`}>Lees hier de voorwaarden</a>
-                    <a href="/" className="btn btn-primary w-100">Kies</a>
+                    <a href="/Checkout/checkout" className="btn btn-primary w-100">Kies</a>
                 </div>
             </div>
 
@@ -93,7 +93,7 @@ function Subscription() {
     return (
         <>
             <Header />
-            <div className="row pt-5" style={{backgroundColor: "gray", minHeight: "100vh"}}>
+            <div className="row pt-5">
                 <div className="col-2"></div>
 
                 {/* Pay as you go Card */}

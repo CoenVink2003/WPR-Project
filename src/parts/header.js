@@ -18,7 +18,7 @@ const Header = () => {
                         >
                             <i className="bi bi-person"></i>{firstName}
                         </a>
-                        <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <div className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
                             <a className="dropdown-item" href="/Customer/edit">
                                 Edit account
                             </a>
@@ -70,12 +70,12 @@ const Header = () => {
                                 </a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="">
+                                <a className="nav-link" href="/Customer/Login">
                                     Particulier
                                 </a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="">
+                                <a className="nav-link" href="/Company/Register">
                                     Zakelijk
                                 </a>
                             </li>
@@ -85,7 +85,7 @@ const Header = () => {
                                 </a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="">
+                                <a className="nav-link" href="/AboutUs">
                                     Over Ons
                                 </a>
                             </li>

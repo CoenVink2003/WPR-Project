@@ -120,9 +120,13 @@ function Homepage() {
                                         </tbody>
                                     </table>
                                 </div>
-                                <a className="btn btn-primary w-100" href="/RentRequest/new?id={vehicle.id}">
+                                <a
+                                    className="btn btn-primary w-100"
+                                    href={`/RentRequest/new?id=${vehicle.id}`}
+                                >
                                     Huur deze auto
                                 </a>
+
                             </div>
                         </div>
                     </div>
@@ -136,27 +140,10 @@ function Homepage() {
         <>
             <Header />
             <header className="bg-primary text-white text-center py-5">
-                <h1 className="display-4">Welkom bij CarAndALL</h1>
-                <p className="lead">Jouw perfecte voertuig, altijd binnen bereik!</p>
-                <div className="mt-4">
-                    <a href="" className="btn btn-light btn-lg me-2">
-                        Particulier
-                    </a>
-                    <a href="" className="btn btn-secondary btn-lg">
-                        Zakelijk
-                    </a>
-                </div>
+                <h1 className="display-4">Welkom bij CarAndAll</h1>
+                <p className="lead">Jouw perfecte voertuig, altijd binnen handbereik!</p>
             </header>
 
-            <section className="bg-light py-5">
-                <div className="container text-center">
-                    <h2>Bekijk alle auto's</h2>
-                    <p>Registreer je zelf en bekijk alle voertuigen!</p>
-                    <a href="/Customer/register" className="btn btn-primary">
-                        Registreer je zelf maar!
-                    </a>
-                </div>
-            </section>
 
             <section className="container my-5">
                 <h2 className="text-center mb-4">Zoek jouw auto</h2>
