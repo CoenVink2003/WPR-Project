@@ -25,6 +25,7 @@ namespace WPR
                         message.To.Add(recipientEmail);
                         message.Subject = subject;
                         message.Body = body;
+                        message.IsBodyHtml = true; // Enable HTML content
 
                         client.Send(message);
                     }
