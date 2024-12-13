@@ -13,7 +13,6 @@
         "packagesPath": "/Users/timobrouwer/.nuget/packages/",
         "outputPath": "/Users/timobrouwer/Documents/HHS/Jaar 2/Semester 3/Project/WPR/obj/",
         "projectStyle": "PackageReference",
-        "UsingMicrosoftNETSdk": false,
         "configFilePaths": [
           "/Users/timobrouwer/.nuget/NuGet/NuGet.Config"
         ],

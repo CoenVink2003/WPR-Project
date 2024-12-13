@@ -16,8 +16,10 @@ namespace WPR
 
         protected override void OnConfiguring(DbContextOptionsBuilder b)
         {
-            b.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"));
+            b.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"))
+                .ConfigureWarnings(warnings => warnings.Ignore(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.PendingModelChangesWarning));
         }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -35,5 +37,7 @@ namespace WPR
         public DbSet<Company> Companies { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<Subscription> Subscriptions { get; set; }
+        public DbSet<RentRequest> RentRequests { get; set; }
+
     }
 }

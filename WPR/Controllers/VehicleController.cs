@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WPR;
+using System.IO;
 
 [Route("api/Vehicle")]
 [ApiController]
@@ -51,12 +53,18 @@ public class VehicleController : ControllerBase
         return vehicle;
     }
 
+        // POST: api/vehicle
     [HttpPost]
-    public async Task<ActionResult<Vehicle>> PostVehicle([FromBody] Vehicle vehicle)
+    public async Task<ActionResult<Vehicle>> PostVehicle([FromForm] Vehicle vehicle, IFormFile image)
     {
         if (vehicle == null)
         {
             return BadRequest("Vehicle object is null.");
+        }
+
+        if (image == null || image.Length == 0)
+        {
+            return BadRequest("Image file is required.");
         }
 
         if (!ModelState.IsValid)
@@ -64,19 +72,38 @@ public class VehicleController : ControllerBase
             return BadRequest(ModelState);
         }
 
+        // Lees de afbeelding naar een byte[] en sla op in het Vehicle object
+        using (var memoryStream = new MemoryStream())
+        {
+            await image.CopyToAsync(memoryStream);
+            vehicle.Image = memoryStream.ToArray();
+        }
+
         _context.Vehicles.Add(vehicle);
         await _context.SaveChangesAsync();
 
         return CreatedAtAction("GetVehicle", new { id = vehicle.Id }, vehicle);
+        
     }
 
+    // PUT method to update an existing vehicle with an image (uploaded as a file)
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutVehicle(int id, Vehicle vehicle)
+    public async Task<IActionResult> PutVehicle(int id, [FromBody] Vehicle vehicle)
     {
         if (id != vehicle.Id)
         {
             return BadRequest("ID in URL komt niet overeen met ID in het Vehicle-object.");
         }
+
+        // // Handle the image file if it exists
+        // if (image != null)
+        // {
+        //     using (var memoryStream = new MemoryStream())
+        //     {
+        //         await image.CopyToAsync(memoryStream);
+        //         vehicle.Image = memoryStream.ToArray(); // Convert the image to a byte array
+        //     }
+        // }
 
         _context.Entry(vehicle).State = EntityState.Modified;
 
