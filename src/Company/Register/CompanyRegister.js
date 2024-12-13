@@ -5,6 +5,8 @@ import { wrapperPOST } from "../../wrapper";
 import bcrypt from 'bcryptjs';
 import { useNavigate } from "react-router-dom";
 import validator from "validator";
+import Header from "../../parts/header";
+
 
 function CompanyRegister() {
     const [companyName, setCompanyName] = useState("");
@@ -99,7 +101,7 @@ function CompanyRegister() {
             clearForm();
 
             // Navigeer naar de login pagina
-            navigate("/Customer/login");
+            navigate("/Company/login");
         } catch (error) {
             // Fout afhandelen
             console.error("Error during signup:", error);
@@ -153,118 +155,121 @@ function CompanyRegister() {
     }
 
     return (
-        <div className="App d-flex justify-content-center align-items-center vh-100">
-            <div className="background w-100 d-flex justify-content-center align-items-center">
-                <div className="registerContainer p-4 dp-fadein-prep shadow-lg rounded bg-white"
-                     style={{maxWidth: "500px"}}>
-                    <form onSubmit={handleSubmit}>
-                        <h2 className="mb-2 text-center">Aanmelden Bedrijf</h2>
-                        <div className="border-3 border-bottom border-dark w-25 m-auto mt-0 mb-3"></div>
-                        <ErrorBox password={password} email={email}/>
+        <div className="App">
+            <Header />
+            <div className="App d-flex justify-content-center align-items-center vh-100">
+                <div className="background w-100 d-flex justify-content-center align-items-center">
+                    <div className="registerContainer p-4 dp-fadein-prep shadow-lg rounded bg-white"
+                         style={{maxWidth: "500px"}}>
+                        <form onSubmit={handleSubmit}>
+                            <h2 className="mb-2 text-center">Aanmelden Bedrijf</h2>
+                            <div className="border-3 border-bottom border-dark w-25 m-auto mt-0 mb-3"></div>
+                            <ErrorBox password={password} email={email}/>
 
-                        <label className="form-label m-0"><b>Bedrijfsnaam <span
-                            className="required">*</span></b></label>
-                        <input
-                            className="form-control"
-                            value={companyName}
-                            onChange={(e) => setCompanyName(e.target.value)}
-                            placeholder="Bedrijfsnaam"
-                        />
+                            <label className="form-label m-0"><b>Bedrijfsnaam <span
+                                className="required">*</span></b></label>
+                            <input
+                                className="form-control"
+                                value={companyName}
+                                onChange={(e) => setCompanyName(e.target.value)}
+                                placeholder="Bedrijfsnaam"
+                            />
 
-                        <label className="form-label mt-3 mb-0"><b>KVK nummer <span
-                            className="required">*</span></b></label>
-                        <input
-                            className="form-control"
-                            value={kvkNumber}
-                            onChange={(e) => setKVKNumber(e.target.value)}
-                            placeholder="KVK nummer"
-                        />
+                            <label className="form-label mt-3 mb-0"><b>KVK nummer <span
+                                className="required">*</span></b></label>
+                            <input
+                                className="form-control"
+                                value={kvkNumber}
+                                onChange={(e) => setKVKNumber(e.target.value)}
+                                placeholder="KVK nummer"
+                            />
 
-                        <div className="row">
-                            <div className="col-md-7">
-                                <label className="form-label mt-3 mb-0"><b>Straatnaam <span
-                                    className="required">*</span></b></label>
-                                <input
-                                    className="form-control"
-                                    value={streetName}
-                                    onChange={(e) => setStreetName(e.target.value)}
-                                    placeholder="Straatnaam"
-                                />
+                            <div className="row">
+                                <div className="col-md-7">
+                                    <label className="form-label mt-3 mb-0"><b>Straatnaam <span
+                                        className="required">*</span></b></label>
+                                    <input
+                                        className="form-control"
+                                        value={streetName}
+                                        onChange={(e) => setStreetName(e.target.value)}
+                                        placeholder="Straatnaam"
+                                    />
+                                </div>
+                                <div className="col-md-5">
+                                    <label className="form-label mt-3 mb-0"><b>Huisnummer <span
+                                        className="required">*</span></b></label>
+                                    <input
+                                        className="form-control"
+                                        value={houseNumber}
+                                        onChange={(e) => setHouseNumber(e.target.value)}
+                                        placeholder="Huisnummer"
+                                    />
+                                </div>
                             </div>
-                            <div className="col-md-5">
-                                <label className="form-label mt-3 mb-0"><b>Huisnummer <span
-                                    className="required">*</span></b></label>
-                                <input
-                                    className="form-control"
-                                    value={houseNumber}
-                                    onChange={(e) => setHouseNumber(e.target.value)}
-                                    placeholder="Huisnummer"
-                                />
-                            </div>
-                        </div>
 
-                        <label className="form-label mt-3 mb-0"><b>Postcode <span
-                            className="required">*</span></b></label>
-                        <input
-                            className="form-control"
-                            value={zipCode}
-                            onChange={(e) => setZipCode(e.target.value)}
-                            placeholder="Postcode"
-                        />
+                            <label className="form-label mt-3 mb-0"><b>Postcode <span
+                                className="required">*</span></b></label>
+                            <input
+                                className="form-control"
+                                value={zipCode}
+                                onChange={(e) => setZipCode(e.target.value)}
+                                placeholder="Postcode"
+                            />
 
-                        <div className="row">
-                            <div className="col-md-6">
-                                <label className="form-label mt-3 mb-0"><b>Contactpersoon <span
-                                    className="required">*</span></b></label>
-                                <input
-                                    className="form-control"
-                                    value={firstName}
-                                    onChange={(e) => setFirstName(e.target.value)}
-                                    placeholder="Voornaam"
-                                />
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <label className="form-label mt-3 mb-0"><b>Contactpersoon <span
+                                        className="required">*</span></b></label>
+                                    <input
+                                        className="form-control"
+                                        value={firstName}
+                                        onChange={(e) => setFirstName(e.target.value)}
+                                        placeholder="Voornaam"
+                                    />
+                                </div>
+                                <div className="col-md-6">
+                                    <label className="form-label mt-3 mb-0"><b>Achternaam</b></label>
+                                    <input
+                                        className="form-control"
+                                        value={lastName}
+                                        onChange={(e) => setLastName(e.target.value)}
+                                        placeholder="Achternaam"
+                                    />
+                                </div>
                             </div>
-                            <div className="col-md-6">
-                                <label className="form-label mt-3 mb-0"><b>Achternaam</b></label>
-                                <input
-                                    className="form-control"
-                                    value={lastName}
-                                    onChange={(e) => setLastName(e.target.value)}
-                                    placeholder="Achternaam"
-                                />
-                            </div>
-                        </div>
 
-                        <label className="form-label mt-3 mb-0"><b>Email-adres</b> <span
-                            className="required">*</span></label>
-                        <input
-                            className="form-control"
-                            type="email"
-                            value={email.value}
-                            onChange={(e) => setEmail({...email, value: e.target.value})}
-                            onBlur={() => setEmail({...email, isTouched: true})}
-                            placeholder="Email adres"
-                            required
-                        />
-                        <label className="form-label mt-3 mb-0"><b>Wachtwoord</b> <span
-                            className="required">*</span></label>
-                        <input
-                            className="form-control"
-                            type="password"
-                            value={password.value}
-                            onChange={(e) => setPassword({...password, value: e.target.value})}
-                            onBlur={() => setPassword({...password, isTouched: true})}
-                            placeholder="Wachtwoord"
-                        />
-                        <a href="/Customer/login" className="float-end mt-3 text-dark">Heb je al een account? Log
-                            in!</a>
-                        <button
-                            type="submit"
-                            className={`btn ${getIsFormValid() ? 'btn-primary' : 'btn-danger'} btn-block w-100 mt-3`}
-                            disabled={!getIsFormValid()}
-                        >
-                            Aanmelden
-                        </button>
-                    </form>
+                            <label className="form-label mt-3 mb-0"><b>Email-adres</b> <span
+                                className="required">*</span></label>
+                            <input
+                                className="form-control"
+                                type="email"
+                                value={email.value}
+                                onChange={(e) => setEmail({...email, value: e.target.value})}
+                                onBlur={() => setEmail({...email, isTouched: true})}
+                                placeholder="Email adres"
+                                required
+                            />
+                            <label className="form-label mt-3 mb-0"><b>Wachtwoord</b> <span
+                                className="required">*</span></label>
+                            <input
+                                className="form-control"
+                                type="password"
+                                value={password.value}
+                                onChange={(e) => setPassword({...password, value: e.target.value})}
+                                onBlur={() => setPassword({...password, isTouched: true})}
+                                placeholder="Wachtwoord"
+                            />
+                            <a href="/Company/login" className="float-end mt-3 text-dark">Heb je al een account? Log
+                                in!</a>
+                            <button
+                                type="submit"
+                                className={`btn ${getIsFormValid() ? 'btn-primary' : 'btn-danger'} btn-block w-100 mt-3`}
+                                disabled={!getIsFormValid()}
+                            >
+                                Aanmelden
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

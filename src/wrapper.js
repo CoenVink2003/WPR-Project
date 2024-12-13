@@ -1,4 +1,4 @@
-let server_location = "https://localhost:7211/api/";
+let server_location = "https://89.116.29.81:5072/api/";
 
 
 export async function wrapperPOST(controller, endpoint, data) {
@@ -11,6 +11,7 @@ export async function wrapperPOST(controller, endpoint, data) {
             body: JSON.stringify(data),
         });
 
+        console.log(response);
         if (response.ok) {
             return true;
         } else {
@@ -55,6 +56,26 @@ export async function wrapperPUT(controller, endpoint, id, new_data) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(new_data),
+        });
+
+        if (response.ok) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch (error) {
+        console.error(error);
+        throw error; // Rethrow to allow calling code to handle it
+    }
+}
+
+export async function wrapperDELETE(controller, id) {
+    try {
+        const response = await fetch(server_location + controller + "/" + id, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
         });
 
         if (response.ok) {

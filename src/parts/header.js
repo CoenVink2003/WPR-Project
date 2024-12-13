@@ -1,6 +1,13 @@
 import React from "react";
+import {checkRedirect} from "../helpers/checkLogin";
+
 
 const Header = () => {
+
+    const logout = () => {
+        sessionStorage.clear();
+        checkRedirect("/");
+    }
 
     const AccountHead = () => {
         if (sessionStorage.getItem("customer_id")) {
@@ -19,10 +26,13 @@ const Header = () => {
                             <i className="bi bi-person"></i>{firstName}
                         </a>
                         <div className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                            <a className="dropdown-item" href="/Orders">
+                                My Orders
+                            </a>
                             <a className="dropdown-item" href="/Customer/edit">
                                 Edit account
                             </a>
-                            <a className="dropdown-item" href="/Customer/login">
+                            <a className="dropdown-item" href="#" onClick={logout}>
                                 Log out
                             </a>
                         </div>

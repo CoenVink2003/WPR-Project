@@ -7,10 +7,11 @@ import {validateEmail} from "../utils";
 import {wrapperGET} from "../wrapper";
 import { useEffect } from 'react';
 import Header from "../parts/header";
+import checkLogin from "../helpers/checkLogin";
 
 
 
-function Homepage() {
+function Overview() {
 
     const [vehicleType, setVehicleType] = useState({
         value: "",
@@ -23,12 +24,6 @@ function Homepage() {
     const [endDate, setEndDate] = useState({
         value: "",
     });
-
-
-    const getImagePath = (vehicle) => {
-        const imageName = "no-image.jpg"; //vehicle.vehicleType + '.gif';
-        return `/vehicles/${imageName}`;
-    };
 
     const handleImageError = (e) => {
         e.target.src = '/vehicles/no-image.jpg';
@@ -77,6 +72,37 @@ function Homepage() {
             Camper: 'Camper',
         };
 
+        const test2 = async ({ vehicle }) => {
+            let test = await wrapperGET("RentRequest", "", {
+                "Vehicle": vehicle.id,
+            })
+
+            return test;
+        }
+
+        const RentButton = ({ vehicle }) => {
+            console.log(test2(vehicle));
+            if(true)
+            {
+                return (
+                    <a
+                        className="btn btn-primary w-100"
+                        href={`/RentRequest/new?id=${vehicle.id}`}
+                    >
+                        Huur deze auto
+                    </a>
+                );
+            }
+            return (
+                <a
+                    className="btn btn-primary w-100"
+                    href={`/RentRequest/new?id=${vehicle.id}`}
+                >
+                    Log in om deze auto te huren
+                </a>
+            );
+        };
+
         return (
             <div className="row">
                 {vehicles.map((vehicle, index) => (
@@ -86,7 +112,7 @@ function Homepage() {
                             <div className="card-body p-0">
                                 {/* Dynamisch de afbeelding toevoegen met fallback op error */}
                                 <img
-                                    src={getImagePath(vehicle)}
+                                    src={vehicle.Image}
                                     className="w-100"
                                     onError={handleImageError}
                                 />
@@ -120,12 +146,7 @@ function Homepage() {
                                         </tbody>
                                     </table>
                                 </div>
-                                <a
-                                    className="btn btn-primary w-100"
-                                    href={`/RentRequest/new?id=${vehicle.id}`}
-                                >
-                                    Huur deze auto
-                                </a>
+                                <RentButton vehicle={vehicle} />
 
                             </div>
                         </div>
@@ -214,4 +235,4 @@ function Homepage() {
     );
 }
 
-export default Homepage;
+export default Overview;

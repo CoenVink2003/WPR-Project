@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import validator from "validator";
 import Select from "react-select";
 
-function CompanyCustomerRegister({companyId}) {
+function CompanyCustomerRegister() {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState({
@@ -86,6 +86,11 @@ function CompanyCustomerRegister({companyId}) {
         let hashedPassword = bcrypt.hashSync(password.value, 10);
 
         try {
+            const companyId = sessionStorage.getItem("company_id");
+
+            if (!companyId) {
+                throw new Error("Company ID not found in sessionStorage.");
+            }
             // Wacht tot de wrapperPOST klaar is
             await wrapperPOST("CompanyCustomer", "", {
                 firstName,
@@ -100,7 +105,7 @@ function CompanyCustomerRegister({companyId}) {
             clearForm();
 
             // Navigeer naar de login pagina
-            navigate("/Customer/login");
+            navigate("/Company/Management");
         } catch (error) {
             // Fout afhandelen
             console.error("Error during signup:", error);
@@ -124,8 +129,25 @@ function CompanyCustomerRegister({companyId}) {
         );
     }
 
-    const handleChange = (event) => {
-        setIsManager(event.target.value === "manager");
+    const handleChange = (selectedOption) => {
+        setIsManager(selectedOption.value === "manager");
+    }
+
+    const MyComponent = ({ isManager, handleChange }) => {
+        const options = [
+            { value: 'manager', label: 'Manager' },
+            { value: 'personeel', label: 'Personeel' },
+        ];
+
+        return (
+            <div className="form-group">
+                <Select
+                    value={options.find(option => option.value === (isManager ? 'manager' : 'personeel'))}
+                    onChange={handleChange}
+                    options={options}
+                />
+            </div>
+        );
     }
 
     return (
@@ -135,7 +157,8 @@ function CompanyCustomerRegister({companyId}) {
                     <form onSubmit={handleSubmit}>
 
 
-                        <h2 className="mb-2 text-center">Sign Up</h2>
+                        <h2 className="mb-2 text-center">Aanmelden</h2>
+                        <h4 className="mb-2 text-center">nieuwe werknemer</h4>
                         <div className="border-3 border-bottom border-dark w-25 m-auto mt-0 mb-3"></div>
                         <ErrorBox password={password} email={email}/>
                         <label className="form-label m-0"><b>Voornaam <span className="required">*</span></b></label>
@@ -160,13 +183,8 @@ function CompanyCustomerRegister({companyId}) {
 
                         <label className="form-label mt-3 mb-0"><b>Autoriteit</b> <span
                             className="required">*</span></label>
-                        <div className= "form-group">
-                            <Select value={isManager ? "manager" : "personeel"} onChange={handleChange}>
-                                <option value="">Selecteer...</option>
-                                <option value="manager">Manager</option>
-                                <option value="personeel">Personeel</option>
-                            </Select>
-                        </div>
+                        <MyComponent isManager={isManager} handleChange={handleChange} />
+
 
                         <label className="form-label mt-3 mb-0"><b>Email-adres</b> <span
                             className="required">*</span></label>
@@ -197,8 +215,7 @@ function CompanyCustomerRegister({companyId}) {
                             }}
                             placeholder="Wachtwoord"
                         />
-                        <a href="/Customer/login" className="float-end mt-3 text-dark">Heb je al een account? Log
-                            in!</a>
+                        <a href="/Company/Management" className="float-end mt-3 text-dark">Terug gaan? Klik hier!</a>
                         <button
                             type="submit"
                             className={`btn ${getIsFormValid() ? 'btn-primary' : 'btn-danger'} btn-block w-100`}

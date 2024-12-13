@@ -11,7 +11,7 @@ function CompanySubscription() {
     });
 
 
-    const kvkNumberErrorMessage = () => {
+    const KvkErrorMessage = () => {
         return (
             <p className="FieldError">KVK nummer dient uit 8 cijfers te bestaan.</p>
         );
@@ -93,7 +93,7 @@ function CompanySubscription() {
                         />
                         {kvkNumber.isTouched && (kvkNumber.value.length < 8 || isNaN(kvkNumber.value)) && (
                             <div className="text-danger mt-1">
-                                <kvkNumberErrorMessage />
+                                <KvkErrorMessage />
                             </div>
                         )}
                     </div>

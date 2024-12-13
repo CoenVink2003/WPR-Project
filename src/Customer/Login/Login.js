@@ -4,9 +4,11 @@ import { validateEmail } from "../../utils";
 import bcrypt from "bcryptjs";
 import {wrapperGET, wrapperPOST} from "../../wrapper";
 import { useNavigate } from "react-router-dom";
+import Header from "../../parts/header";
+import {checkRedirect} from "../../helpers/checkLogin";
 
 
-function EmployeeLogin() {
+function CustomerLogin() {
     const [email, setEmail] = useState({
         value: "",
         isTouched: false,
@@ -72,8 +74,6 @@ function EmployeeLogin() {
                 email: email.value,
             });
 
-            console.log(info)
-
             if(info.length == 1)
             {
                 const doesPasswordMatch = bcrypt.compareSync(password.value, info[0].password);
@@ -86,8 +86,7 @@ function EmployeeLogin() {
                     sessionStorage.setItem("customer_email", info[0].email);
 
 
-                    // Navigeer naar de login pagina
-                    navigate("/");
+                    checkRedirect("/")
                 }
                 else
                 {
@@ -111,22 +110,29 @@ function EmployeeLogin() {
 
     return (
         <div className="App">
+            <Header />
             <div className="background">
                 <div className="loginContainer p-4 dp-fadein-prep">
+                    <div className="tabs">
+                        <div className="tab active">
+                            Particulier
+                        </div>
+                    </div>
                     <form onSubmit={handleSubmit}>
                         <h2 className="mb-2 text-center">Log in</h2>
                         <div className="border-3 border-bottom border-dark w-25 m-auto mt-0 mb-3"></div>
-                        <ErrorBox />
-                        <label className="form-label mt-3 mb-0"><b>Email-adres</b> <span className="required">*</span></label>
+                        <ErrorBox/>
+                        <label className="form-label mt-3 mb-0"><b>Email-adres</b> <span
+                            className="required">*</span></label>
                         <input
                             className="form-control"
                             type="email"
                             value={email.value}
                             onChange={(e) => {
-                                setEmail({ ...email, value: e.target.value });
+                                setEmail({...email, value: e.target.value});
                             }}
                             onBlur={() => {
-                                setEmail({ ...email, isTouched: true });
+                                setEmail({...email, isTouched: true});
                             }}
                             placeholder="Email adres"
                             required
@@ -138,14 +144,15 @@ function EmployeeLogin() {
                             value={password.value}
                             type="password"
                             onChange={(e) => {
-                                setPassword({ ...password, value: e.target.value });
+                                setPassword({...password, value: e.target.value});
                             }}
                             onBlur={() => {
-                                setPassword({ ...password, isTouched: true });
+                                setPassword({...password, isTouched: true});
                             }}
                             placeholder="Wachtwoord"
                         />
-                        <a href="/Customer/register" className="float-end mt-3 text-dark">Heb je nog geen account? Registreer hier!</a>
+                        <a href="/Customer/register" className="float-end mt-3 text-dark">Heb je nog geen account?
+                            Registreer hier!</a>
                         <button
                             type="submit"
                             className={`btn ${getIsFormValid() ? 'btn-primary' : 'btn-danger'} btn-block w-100`}
@@ -160,4 +167,4 @@ function EmployeeLogin() {
     );
 }
 
-export default EmployeeLogin;
+export default CustomerLogin;

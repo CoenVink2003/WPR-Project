@@ -4,8 +4,8 @@ import { validateEmail } from "../../utils";
 import { wrapperPOST } from "../../wrapper";
 import bcrypt from 'bcryptjs';
 import { useNavigate } from "react-router-dom";
-import validator from "validator";
 import Email from "../../Email/Email";
+import Header from "../../parts/header";
 
 function CustomerRegister() {
     const [firstName, setFirstName] = useState("");
@@ -125,6 +125,7 @@ function CustomerRegister() {
 
     return (
         <div className="App">
+            <Header />
             <div className="background">
                 <div className="registerContainer p-4 dp-fadein-prep">
                     <form onSubmit={handleSubmit}>
